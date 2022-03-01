@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kk.api.mapper.RoleMapper">
+
+    <resultMap id="RoleMap" type="com.kk.api.entity.Role">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <resultMap id="RoleWithResourceMap" type="com.kk.api.dto.RoleWithResource" extends="RoleMap">
+        <!-- 1角色对应多资源 -->
+        <collection property="resourceList" ofType="com.kk.api.entity.Resource">
+            <result column="resource" jdbcType="VARCHAR" property="resource"/>
+            <!-- 1资源对应多操作 -->
+            <collection property="handleList" ofType="com.kk.api.entity.Handle">
+                <id column="id" jdbcType="BIGINT" property="id"/>
+                <result column="handle" jdbcType="VARCHAR" property="handle"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="listRoles" resultMap="RoleWithResourceMap">
+        SELECT r.*
+        FROM role r
+        ORDER BY r.id
+    </select>
+
+    <update id="updateTimeById">
+        UPDATE role
+        SET update_time = NOW()
+        WHERE id = #{id}
+    </update>
+
+</mapper>
