@@ -22,10 +22,10 @@ import static com.kk.api.core.constant.ProjectConstant.*;
 class CodeGenerator {
   // JDBC配置，请修改为你项目的实际配置
   private static final String JDBC_URL =
-      "jdbc:mysql://localhost:3306/admin_test"
-          + "?useUnicode=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=UTC";
-  private static final String JDBC_USERNAME = "root";
-  private static final String JDBC_PASSWORD = "root";
+      "jdbc:mysql://120.77.183.219:3306/admin_psychological"
+          + "?useUnicode=true&useSSL=false&allowMultiQueries=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=UTC";
+  private static final String JDBC_USERNAME = "hrmdb";
+  private static final String JDBC_PASSWORD = "hrmdb123";
   private static final String JDBC_DIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
   // 项目在硬盘上的基础路径
   private static final String PROJECT_PATH = System.getProperty("user.dir");
@@ -58,8 +58,8 @@ class CodeGenerator {
     if (!scanner.next().equals("y")) {
       return;
     }
-    CodeGenerator.genCode("report", "wechat");
-    // genCodeByCustomModelName("输入表名","输入自定义Model名称");
+    //CodeGenerator.genCode("t_test");
+    genCodeByCustomModelName("t_test","TTest");
   }
 
   /**

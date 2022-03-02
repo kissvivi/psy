@@ -123,11 +123,11 @@ export default {
             }
           ]
         },
-        // {
-        //   name: "工作机会",
-        //   path: "/jobchance",
-        //   children: []
-        // },
+        {
+          name: "问卷调查",
+          path: "/jobchance",
+          children: []
+        },
         // {
         //   name: "联系我们",
         //   path: "/contactus",

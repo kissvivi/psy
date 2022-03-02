@@ -256,42 +256,42 @@ export default {
       serverList: [
         {
           logo: require("@/assets/img/psy3.png"),
-          title: "核心优势1",
+          title: "点击咨询",
           content: "<p>由专业客服提供人工服务</p>负责疑难问题和故障受理"
         },
         {
           logo: require("@/assets/img/psy4.png"),
-          title: "核心优势2",
+          title: "点击咨询",
           content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
         },
         {
           logo: require("@/assets/img/psy3.png"),
-          title: "核心优势1",
+          title: "点击咨询",
           content: "<p>由专业客服提供人工服务</p>负责疑难问题和故障受理"
         },
         {
           logo: require("@/assets/img/psy4.png"),
-          title: "核心优势2",
+          title: "点击咨询",
           content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
         },
         {
           logo: require("@/assets/img/psy3.png"),
-          title: "核心优势1",
+          title: "点击咨询",
           content: "<p>由专业客服提供人工服务</p>负责疑难问题和故障受理"
         },
         {
           logo: require("@/assets/img/psy4.png"),
-          title: "核心优势2",
+          title: "点击咨询",
           content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
         },
         {
           logo: require("@/assets/img/psy3.png"),
-          title: "核心优势1",
+          title: "点击咨询",
           content: "<p>由专业客服提供人工服务</p>负责疑难问题和故障受理"
         },
         {
           logo: require("@/assets/img/psy4.png"),
-          title: "核心优势2",
+          title: "点击咨询",
           content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
         }
 
