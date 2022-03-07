@@ -103,6 +103,14 @@ export default new Router({
           meta: {
             title: '相关服务'
           }
+        },
+        {
+          path: '/chat',
+          name: 'chat',
+          component: resolve => require(['@/view/chat'],resolve),
+          meta: {
+            title: '聊天界面'
+          }
         }
       ]
     }
