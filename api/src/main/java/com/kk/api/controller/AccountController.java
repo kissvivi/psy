@@ -26,6 +26,7 @@ import java.util.Map;
  * @author Zoctan
  * @date 2018/06/09
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/account")
 @Validated

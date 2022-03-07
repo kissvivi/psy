@@ -107,9 +107,17 @@ export default new Router({
         {
           path: '/chat',
           name: 'chat',
-          component: resolve => require(['@/view/chat'],resolve),
+          component: resolve => require(['@/view/Chat'],resolve),
           meta: {
             title: '聊天界面'
+          }
+        },
+        {
+          path: '/chat2',
+          name: 'chat2',
+          component: resolve => require(['@/view/Chat2'],resolve),
+          meta: {
+            title: '聊天界面2'
           }
         }
       ]

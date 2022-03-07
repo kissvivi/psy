@@ -43,7 +43,7 @@
 							<div class="well" id="log-container" style="height:400px;overflow-y:scroll">
 
 								<div v-for="(item,index) in reActions" :key="index">
-									<div class='bg-info' :style="item.from == '2' ? 'text-align: right;background-color: #f3f3f3;' : '' ">
+									<div class='bg-info'>
 										<label class='text-danger'>{{item.from}}&nbsp;{{item.date}}</label>
 										<div class='text-success'>{{item.text}}</div>
 									</div>
@@ -93,8 +93,8 @@
 				websock: null,
 				input: "请输入聊天信息",
 				actions: {
-					from: "2",
-					to: "1",
+					from: "1",
+					to: "2",
 					text: "请输入聊天信息",
 					date: ""
 				},

@@ -9,7 +9,15 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    proxyTable: {
+      '/api': {
+        target: 'http://127.0.0.1:8080', // 要代理的域名
+        changeOrigin: true,//允许跨域
+        pathRewrite: {
+          '^/api': '' // 这个是定义要访问的路径，名字随便写
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

@@ -28,7 +28,11 @@ import './assets/js/bootstrap.min'
 /* animate.css */
 import 'animate.css'
 
- 
+// ElementUI
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+
 /* 头部组件 */
 import Header from './components/Header'
 Vue.component(Header.name,Header)
