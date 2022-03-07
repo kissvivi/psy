@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.zoctan</groupId>
+    <groupId>com.kk</groupId>
     <artifactId>api</artifactId>
     <version>1.0</version>
     <!-- 打包类型 -->
@@ -220,6 +220,12 @@
             <version>${mybatis-generator.version}</version>
         </dependency>
 
+        <!-- websocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
         <!-- https://projectlombok.org/ -->
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
@@ -259,22 +265,22 @@
         </plugins>
     </build>
 
-    <repositories>
-        <repository>
-            <id>aliyun-snapshots</id>
-            <url>https://maven.aliyun.com/repository/snapshots</url>
-        </repository>
-        <repository>
-            <id>aliyun-repo</id>
-            <url>https://maven.aliyun.com/repository/central</url>
-        </repository>
-    </repositories>
+<!--    <repositories>-->
+<!--&lt;!&ndash;        <repository>&ndash;&gt;-->
+<!--&lt;!&ndash;            <id>aliyun-snapshots</id>&ndash;&gt;-->
+<!--&lt;!&ndash;            <url>https://repository.apache.org/snapshots</url>&ndash;&gt;-->
+<!--&lt;!&ndash;        </repository>&ndash;&gt;-->
+<!--        <repository>-->
+<!--            <id>aliyun-repo</id>-->
+<!--            <url>https://maven.aliyun.com/repository/central</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>aliyun-plugin</id>
-            <url>https://maven.aliyun.com/repository/central</url>
-        </pluginRepository>
-    </pluginRepositories>
+<!--    <pluginRepositories>-->
+<!--        <pluginRepository>-->
+<!--            <id>aliyun-plugin</id>-->
+<!--            <url>https://maven.aliyun.com/repository/central</url>-->
+<!--        </pluginRepository>-->
+<!--    </pluginRepositories>-->
 
 </project>
