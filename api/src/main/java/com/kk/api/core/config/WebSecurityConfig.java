@@ -93,6 +93,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers(HttpMethod.PUT, "/wechat/token")
         .permitAll()
         // 除上面外的所有请求全部需要鉴权认证
+            .antMatchers("/webSocket/**").permitAll()
         .anyRequest()
         .authenticated();
   }
