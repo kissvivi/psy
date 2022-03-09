@@ -11,6 +11,10 @@ import { hasPermission } from './utils/hasPermission'
 import lang from 'element-ui/lib/locale/lang/zh-CN'
 import locale from 'element-ui/lib/locale'
 
+// /* bootstarp */
+// import './assets/css/bootstrap.min.css'
+// import './assets/js/bootstrap.min'
+
 // 设置语言
 locale.use(lang)
 
