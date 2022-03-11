@@ -9,4 +9,5 @@ public interface ConsultMapper extends MyMapper<Consult> {
     /*更新状态*/
     @Update("update t_consult set status= ${} where id = ${}")
     void updateStatus(int status,long id);
+
 }
