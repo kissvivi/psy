@@ -2,7 +2,12 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import store from './store'
+import '@/permission' // 权限
+import { default as request } from './utils/request'
+import { hasPermission } from './utils/hasPermission'
 
+import '@/icons' // icon
 /* 路由 */
 import router from './router'
 
@@ -11,6 +16,10 @@ import axios from './api'
 import api from './api/api'
 Vue.prototype.http = axios;
 Vue.prototype.api = api;
+
+// 全局的常量
+Vue.prototype.request = request
+Vue.prototype.hasPermission = hasPermission
 
 /* swiper */
 import 'swiper/dist/css/swiper.min.css';
@@ -60,6 +69,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

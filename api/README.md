@@ -116,3 +116,12 @@ if (request.getMethod().equals("OPTIONS")) {
     return;
 }
 ```
+
+```
+netstat -ano | findstr 8080
+
+tasklist | findstr xxxx   //
+
+taskkill /pid xxxx -t -f
+
+```

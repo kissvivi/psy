@@ -16,14 +16,14 @@ export default new Router({
           path: '/',
           redirect: '/home'
         }, 
-        //{
-        //   path: '/login',
-        //   name: 'login',
-        //   component: resolve => require(['@/view/login/index'], resolve),
-        //   meta: {
-        //     title: '登录'
-        //   }
-        // }
+        {
+          path: '/login',
+          name: 'login',
+          component: resolve => require(['@/view/Login'], resolve),
+          meta: {
+            title: '登录'
+          }
+        },
         {
           path: '/home',
           name: 'home',
@@ -36,7 +36,7 @@ export default new Router({
           name: 'software',
           component: resolve => require(['@/view/Software'], resolve),
           meta: {
-            title: '软件产品'
+            title: '个人中心'
           },
           children: [
             {
@@ -48,7 +48,7 @@ export default new Router({
               name: 'software',
               component: resolve => require(['@/view/Software_smartTown'], resolve),
               meta: {
-                title: '软件产品丨智能小镇管理系统'
+                title: '个人中心丨智能小镇管理系统'
               }
             },
             {
@@ -56,7 +56,7 @@ export default new Router({
               name: 'software',
               component: resolve => require(['@/view/Software_bigData'], resolve),
               meta: {
-                title: '软件产品丨大数据管理系统'
+                title: '个人中心丨大数据管理系统'
               }
             }
           ]
