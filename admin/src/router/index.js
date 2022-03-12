@@ -21,6 +21,7 @@ export const constantRouterMap = [
   { path: '/login', component: _import('login/index'), hidden: true },
   { path: '/404', component: _import('errorPage/404'), hidden: true },
   { path: '/401', component: _import('errorPage/401'), hidden: true },
+  // { path: '/toChat/:id', component: _import('chat/chat2'), hidden: true },
   {
     path: '',
     component: Layout,
@@ -68,6 +69,17 @@ export const asyncRouterMap = [
       component: _import('account/detail')
     }]
   },
+  {
+    path: '/toChat/:id',
+    component: Layout,
+    redirect: '/toChat/:id',
+    hidden: true,
+    children: [{
+      path: '/toChat/:id',
+      name: '咨询界面',
+      component: _import('chat/chat2')
+    }]
+  },
 
   {
     path: '/role',
@@ -80,6 +92,32 @@ export const asyncRouterMap = [
       name: '角色管理',
       component: _import('role/list'),
       meta: { permission: ['role:list'] }
+    }]
+  },
+  {
+    path: '/chat',
+    component: Layout,
+    redirect: '/chat/list',
+    icon: 'name',
+    noDropDown: true,
+    children: [{
+      path: 'list',
+      name: '咨询管理',
+      component: _import('chat/list'),
+      meta: { permission: ['account:list'] }
+    }]
+  },
+  {
+    path: '/tests',
+    component: Layout,
+    redirect: '/tests/list',
+    icon: 'name',
+    noDropDown: true,
+    children: [{
+      path: 'list',
+      name: '问卷管理',
+      component: _import('tests/list'),
+      meta: { permission: ['account:list'] }
     }]
   }
 ]

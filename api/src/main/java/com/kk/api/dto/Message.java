@@ -12,10 +12,16 @@ import java.util.Date;
 @NoArgsConstructor
 public class Message {
 
-    //发送者name
-    public String from;
-    //接收者name
-    public String to;
+    //发送者id
+    public Long fromID;
+    //接收者id
+    public Long toID;
+
+    //发送者id
+    public String fromName;
+    //接收者id
+    public String toName;
+
     //发送的文本
     public String text;
     //发送时间

@@ -22,10 +22,10 @@ router.beforeEach((to, from, next) => {
         // 重新获取用户信息
         store.dispatch('Detail').then(response => {
           // 生成路由
-          store.dispatch('GenerateRoutes', response.data).then(() => {
-            router.addRoutes(store.getters.addRouters)
-            next({ ...to })
-          })
+          // store.dispatch('GenerateRoutes', response.data).then(() => {
+          //   router.addRoutes(store.getters.addRouters)
+             next({ ...to })
+          // })
         })
       } else {
         next()

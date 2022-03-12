@@ -247,6 +247,29 @@
             <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!--解决Handler dispatch failed;nested exception is java.lang.NoClassDefFoundError: javax/xml/bind/DatatypeConverter-->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -278,22 +301,22 @@
         </plugins>
     </build>
 
-<!--    <repositories>-->
-<!--&lt;!&ndash;        <repository>&ndash;&gt;-->
-<!--&lt;!&ndash;            <id>aliyun-snapshots</id>&ndash;&gt;-->
-<!--&lt;!&ndash;            <url>https://repository.apache.org/snapshots</url>&ndash;&gt;-->
-<!--&lt;!&ndash;        </repository>&ndash;&gt;-->
+    <repositories>
 <!--        <repository>-->
-<!--            <id>aliyun-repo</id>-->
-<!--            <url>https://maven.aliyun.com/repository/central</url>-->
+<!--            <id>aliyun-snapshots</id>-->
+<!--            <url>https://repository.apache.org/snapshots</url>-->
 <!--        </repository>-->
-<!--    </repositories>-->
+        <repository>
+            <id>aliyun-repo</id>
+            <url>https://maven.aliyun.com/repository/central</url>
+        </repository>
+    </repositories>
 
-<!--    <pluginRepositories>-->
-<!--        <pluginRepository>-->
-<!--            <id>aliyun-plugin</id>-->
-<!--            <url>https://maven.aliyun.com/repository/central</url>-->
-<!--        </pluginRepository>-->
-<!--    </pluginRepositories>-->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>aliyun-plugin</id>
+            <url>https://maven.aliyun.com/repository/central</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>

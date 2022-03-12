@@ -1,4 +1,5 @@
 'use strict'
+var webpack = require('webpack')
 const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
@@ -24,6 +25,14 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  plugins: [
+    // eslint-disable-next-line no-undef
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'windows.jQuery': 'jquery'
+    })
+  ],
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

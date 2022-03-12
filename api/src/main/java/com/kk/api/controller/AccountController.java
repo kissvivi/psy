@@ -170,6 +170,7 @@ public class AccountController {
   private Result getToken(final String name) {
     final UserDetails accountDetails = this.userDetailsService.loadUserByUsername(name);
     final String token = this.jwtUtil.sign(name, accountDetails.getAuthorities(), true);
+    //final String token = accountDetails.getUsername();
     return ResultGenerator.genOkResult(token);
   }
 }

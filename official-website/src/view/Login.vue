@@ -34,9 +34,9 @@
           placeholder="请输入密码"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click.native.prevent="showPwd">
+        <!-- <span class="show-pwd" @click.native.prevent="showPwd">
           <icon-svg icon-class="eye" />
-        </span>
+        </span> -->
       </el-form-item>
       <el-form-item>
         <el-button

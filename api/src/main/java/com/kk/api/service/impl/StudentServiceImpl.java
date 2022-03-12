@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * @author kk
@@ -19,4 +20,8 @@ public class StudentServiceImpl extends AbstractService<Student> implements Stud
 @Resource
 private StudentMapper tStudentMapper;
 
+    @Override
+    public Student getStudentByUid(Long uid) {
+        return tStudentMapper.getStudentByUid(uid);
+    }
 }

@@ -1,5 +1,6 @@
 package com.kk.api.service.impl;
 
+import com.kk.api.entity.Student;
 import com.kk.api.mapper.DoctorMapper;
 import com.kk.api.entity.Doctor;
 import com.kk.api.service.DoctorService;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * @author kk
@@ -19,4 +21,8 @@ public class DoctorServiceImpl extends AbstractService<Doctor> implements Doctor
 @Resource
 private DoctorMapper tDoctorMapper;
 
+    @Override
+    public Doctor getDoctorByUid(Long uid) {
+        return tDoctorMapper.getDoctorByUid(uid);
+    }
 }
