@@ -31,3 +31,18 @@ export function remove(Id) {
   })
 }
 
+export function listByDid(params) {
+  return request({
+    url: '/consult/listByDid',
+    method: 'get',
+    params
+  })
+}
+
+export function updateStatus(params) {
+  return request({
+    url: '/consult/status',
+    method: 'put',
+    params
+  })
+}

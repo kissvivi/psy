@@ -79,10 +79,10 @@ public class WebSocketServer {
         System.out.println(message);
         Message msg= JSON.parseObject(message, Message.class);
         msg.setDate(new Date());
-        if (msg.getTo().equals("-1")) {
+        if (msg.getToID().equals("-1")) {
             broadcast(JSON.toJSONString(msg,true));
         } else {
-            sendInfo(msg.getTo(), JSON.toJSONString(msg,true));
+            sendInfo(msg.getToID(), JSON.toJSONString(msg,true));
         }
     }
 

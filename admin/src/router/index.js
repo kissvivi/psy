@@ -70,12 +70,12 @@ export const asyncRouterMap = [
     }]
   },
   {
-    path: '/toChat/:id',
+    path: '/toChat/:consultId/:sid',
     component: Layout,
-    redirect: '/toChat/:id',
+    redirect: '/toChat/:consultId/:sid',
     hidden: true,
     children: [{
-      path: '/toChat/:id',
+      path: '/toChat/:consultId/:sid',
       name: '咨询界面',
       component: _import('chat/chat2')
     }]

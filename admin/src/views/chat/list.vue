@@ -7,9 +7,22 @@
             type="success"
             size="mini"
             icon="el-icon-refresh"
-            v-if="hasPermission('role:list')"
-            @click.native.prevent="getConsultList"
+            v-if="
+              hasPermission('consult:list') || hasPermission('consult:dlist')
+            "
+            @click.native.prevent="initList"
             >刷新</el-button
+          >
+
+          <el-button
+            type="success"
+            size="mini"
+            icon="el-icon-refresh"
+            v-if="
+              hasPermission('consult:list') || hasPermission('consult:dlist')
+            "
+            @click.native.prevent="downTemp"
+            >下载报告模板</el-button
           >
           <!-- <el-button
             type="primary"
@@ -62,11 +75,28 @@
             disable-transitions
             >已驳回</el-tag
           >
-          <el-tag
-            v-if="scope.row.status === 3"
+
+          <el-button
+            v-if="scope.row.status === 4"
+            size="mini"
+            @click.native.prevent="toChart(scope.row)"
+            disable-transitions
+            >咨询中（点击继续咨询）</el-button
+          >
+
+          <el-button
+            v-if="scope.row.status === 5"
             type="success"
             disable-transitions
-            >咨询完成（填写报告）</el-tag
+            @click.native.prevent="uploadExcel"
+            >咨询完成（上传报告）</el-button
+          >
+
+          <el-tag
+            v-if="scope.row.status === 6"
+            type="success"
+            disable-transitions
+            >咨询完成（已上传报告）</el-tag
           >
           <!-- <el-tag
                   :type="scope.row.status === 1 ? 'primary' : 'success'"
@@ -84,7 +114,7 @@
           unix2CurrentTime(scope.row.updateTime)
         }}</template>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         label="管理"
         align="center"
         v-if="
@@ -94,7 +124,7 @@
         "
       >
         <template slot-scope="scope">
-          <!-- <el-button
+          <el-button
             type="info"
             size="mini"
             v-if="hasPermission('role:detail')"
@@ -105,7 +135,7 @@
             size="mini"
             v-if="hasPermission('role:update') && scope.row.name !== '超级管理员'"
             @click.native.prevent="showUpdateConsultDialog(scope.$index)"
-          >修改</el-button> -->
+          >修改</el-button>
           <el-button
             type="danger"
             size="mini"
@@ -116,7 +146,7 @@
             >删除</el-button
           >
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       @size-change="handleSizeChange"
@@ -135,38 +165,50 @@
           >取消</el-button
         >
         <el-button
-          v-if="dialogStatus === 'add'"
           type="success"
           :loading="btnLoading"
-          @click.native.prevent="updateConsultStatus"
+          @click.native.prevent="updateConsultStatusTwo(row)"
           >通过申请</el-button
         >
         <el-button
-          v-if="dialogStatus === 'update'"
           type="primary"
           :loading="btnLoading"
-          @click.native.prevent="updateConsultStatus"
+          @click.native.prevent="updateConsultStatusThree(row)"
           >驳回申请</el-button
         >
       </div>
+    </el-dialog>
+    <!-- 文件上传 -->
+    <el-dialog title="文件上传" :visible.sync="showUploadDialog">
+    <el-upload
+      class="upload-demo"
+      drag
+      action="/psyapi/consult/upload/`${}`"
+      multiple>
+      <i class="el-icon-upload"></i>
+      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__tip" slot="tip">只能上传xls/xlsx文件，且不超过500kb</div>
+    </el-upload>
     </el-dialog>
   </div>
 </template>
 <script>
 import {
   list as listConsult,
+  listByDid as listByDidConsult,
+  updateStatus as updateStatusConsult,
   add as addConsult,
   update as updateConsult,
   remove as removeConsult,
 } from "@/api/consult";
 import { unix2CurrentTime } from "@/utils";
 import { mapGetters } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   created() {
-    if (this.hasPermission("role:list")) {
-      this.getConsultList();
-    }
+
+    this.initList()
   },
   data() {
     /**
@@ -186,12 +228,19 @@ export default {
       consultList: [],
       // permissionList: [],
       listLoading: false,
+      showUploadDialog: false,
       total: 0,
       listQuery: {
         page: 1,
         size: 9,
+        sid: 1,
+        did: 1,
       },
-      dialogStatus: "add",
+      statusQuery: {
+        status: 0,
+        id: 0,
+      },
+      dialogStatus: "apply",
       dialogFormVisible: false,
       textMap: {
         // update: '修改咨询',
@@ -211,10 +260,20 @@ export default {
   },
   computed: {
     ...mapGetters(["roleName"]),
+    ...mapState({
+      account: (state) => state.account,
+    }),
   },
   methods: {
     unix2CurrentTime,
 
+    initList() {
+      if (this.hasPermission("consult:list")) {
+        this.getConsultList();
+      } else if (this.hasPermission("consult:dlist")) {
+        this.getConsultListByDid();
+      }
+    },
     // 申请处理框
     showConsultDialog(row) {
       this.dialogFormVisible = true;
@@ -228,7 +287,7 @@ export default {
     toChart(row) {
       //   直接调用$router.push 实现携带参数的跳转
       this.$router.push({
-        path: `/toChat/${row.sid}`,
+        path: `/toChat/${row.id}/${row.sid}`,
       });
     },
 
@@ -246,6 +305,57 @@ export default {
         .catch((res) => {
           this.$message.error("加载咨询列表失败");
         });
+    },
+
+    /**
+     * 获取咨询列表by医生
+     */
+    getConsultListByDid() {
+      this.listLoading = true;
+      this.listQuery.did = this.account.accountId;
+      listByDidConsult(this.listQuery)
+        .then((response) => {
+          this.consultList = response.data.list;
+          this.total = response.data.total;
+          this.listLoading = false;
+        })
+        .catch((res) => {
+          this.$message.error("加载咨询列表失败");
+        });
+    },
+
+    updateConsultStatusTwo(row) {
+      this.statusQuery.status = 2;
+      this.statusQuery.id = row.id;
+
+      this.updateConsultStatus();
+      this.dialogFormVisible = false;
+    },
+    updateConsultStatusThree() {
+      this.statusQuery.status = 3;
+      this.statusQuery.id = row.id;
+
+      this.updateConsultStatus();
+      this.dialogFormVisible = false;
+    },
+    // 更新状态
+    updateConsultStatus() {
+      updateStatusConsult(this.statusQuery)
+        .then((response) => {
+          this.$message.success("更新状态成功");
+        })
+        .catch((res) => {
+          this.$message.error("更新状态失败");
+        });
+    },
+
+    //下载模板
+    downTemp(){
+    window.location.href = "http://localhost:8080/consult/upload/downLoadTemplateExcel";
+    },
+
+    uploadExcel(){
+      this.showUploadDialog = true
     },
     /**
      * 改变每页数量

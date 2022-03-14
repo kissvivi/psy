@@ -45,7 +45,7 @@ public class StudentController {
         return ResultGenerator.genOkResult(student);
     }
 
-    @GetMapping("uid/{id}")
+    @GetMapping("uid/{uid}")
     public Result ByUid(@PathVariable Long uid) {
         Student student = studentService.getStudentByUid(uid);
         return ResultGenerator.genOkResult(student);

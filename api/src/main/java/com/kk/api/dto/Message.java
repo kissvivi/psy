@@ -13,9 +13,9 @@ import java.util.Date;
 public class Message {
 
     //发送者id
-    public Long fromID;
+    public String fromID;
     //接收者id
-    public Long toID;
+    public String toID;
 
     //发送者id
     public String fromName;

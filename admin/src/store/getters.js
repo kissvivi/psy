@@ -11,6 +11,8 @@ const getters = {
   permissionCodeList: state => state.account.permissionCodeList,
 
   permissionRouters: state => state.permission.routers,
-  addRouters: state => state.permission.addRouters
+  addRouters: state => state.permission.addRouters,
+
+  consultStatus: state => state.consultStatus
 }
 export default getters

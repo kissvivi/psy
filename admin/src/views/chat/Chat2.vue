@@ -64,14 +64,35 @@
                 class="form-control col-md-12"
               />
               <br />
-              <button
-                id="send"
-                @click="sendMessage"
-                type="button"
-                class="btn btn-primary"
-              >
-                发送
-              </button>
+              <div class="right-button">
+                <button
+                  id="send"
+                  @click="sendMessage"
+                  type="button"
+                  class="btn btn-primary"
+                >
+                  发送
+                </button>
+                &nbsp;&nbsp;
+
+                <button
+                  id="send"
+                  @click="cancelSendMessage"
+                  type="button"
+                  class="btn btn-primary"
+                >
+                  取消
+                </button>
+                &nbsp;&nbsp;
+                <button
+                  id="endsend"
+                  @click="endSendMessage"
+                  type="button"
+                  class="btn btn-primary"
+                >
+                  结束咨询
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -104,19 +125,21 @@
 
 <script>
 import { mapState } from "vuex";
-
 import {
-  ByUid as doctorByUid,
-} from "@/api/doctor";
-import {
-  ByUid as studentByUid,
-} from "@/api/student";
+  updateStatus as updateStatusConsult,
+} from "@/api/consult";
+import { ByUid as doctorByUid } from "@/api/doctor";
+import { ByUid as studentByUid } from "@/api/student";
 
 export default {
   name: "test",
   data() {
     return {
       websock: null,
+      statusQuery: {
+        status:0,
+        id:0
+      },
       input: "请输入聊天信息",
       actions: {
         fromID: "1",
@@ -129,11 +152,11 @@ export default {
       reActions: [
         {
           fromID: "1",
-        toID: "2",
-        fromName: "",
-        toName: "",
-        text: "请输入聊天信息",
-        date: "",
+          toID: "2",
+          fromName: "",
+          toName: "",
+          text: "请输入聊天信息",
+          date: "",
         },
       ],
     };
@@ -141,7 +164,7 @@ export default {
   created() {
     this.initWebSocket();
     this.initInfo();
-    console.log("id:", this.$route.params.id);
+    console.log("id:", this.$route.params.sid);
   },
   destroyed() {
     this.websock.close(); //离开路由之后断开websocket连接
@@ -158,22 +181,34 @@ export default {
     // 初始化基本信息
 
     initInfo() {
-      this.actions.toID = this.$route.params.id;
-      this.actions.fromID = this.account.id;
+      
+      this.actions.toID = this.$route.params.sid;
+      console.log("this.account:", this.account);
+      this.actions.fromID = this.account.accountId;
 
-		doctorByUid(this.actions.fromID)
+      console.log("this.actions.fromID:", this.actions.fromID);
+
+      doctorByUid(Number(this.actions.fromID))
         .then((response) => {
-          console.log("response",response.data)
+          this.actions.fromName = response.data.name;
+          console.log("response", response.data);
         })
         .catch((res) => {
-          this.$message.error("加载咨询列表失败");
+          this.$message.error("加载医生信息失败");
         });
-
+      studentByUid(Number(this.actions.toID))
+        .then((response) => {
+          this.actions.toName = response.data.name;
+          console.log("response", response.data);
+        })
+        .catch((res) => {
+          this.$message.error("加载学生信息失败");
+        });
     },
 
     initWebSocket() {
       //初始化weosocket
-      const wsuri = "ws://127.0.0.1:8080/webSocket/" + this.actions.from;
+      const wsuri = "ws://127.0.0.1:8080/webSocket/" + this.actions.fromID;
       this.websock = new WebSocket(wsuri);
       this.websock.onmessage = this.websocketonmessage;
       this.websock.onopen = this.websocketonopen;
@@ -211,7 +246,36 @@ export default {
       console.log("reActions:", this.reActions);
       this.websocketsend(this.actions);
     },
+    //取消咨询
+    cancelSendMessage(){
 
+      this.statusQuery.status = 4;
+      this.statusQuery.id = this.$route.params.consultId ;
+
+      this.updateConsultStatus();
+
+      this.$router.go(-1);
+    },
+    // 结束咨询
+    endSendMessage() {
+
+      this.statusQuery.status = 5;
+      this.statusQuery.id = this.$route.params.consultId ;
+
+      this.updateConsultStatus();
+
+      this.$router.go(-1);
+    },
+    // 更新状态
+    updateConsultStatus() {
+        updateStatusConsult(this.statusQuery)
+        .then((response) => {
+          this.$message.success("更新状态成功");
+        })
+        .catch((res) => {
+          this.$message.error("更新状态失败");
+        });
+    },
     CurentTime() {
       var now = new Date();
 
@@ -283,6 +347,11 @@ export default {
 }
 
 .right {
+  display: flex;
+  justify-content: flex-end;
+}
+.right-button {
+  padding-top: 26px;
   display: flex;
   justify-content: flex-end;
 }

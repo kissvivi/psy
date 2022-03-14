@@ -33,7 +33,7 @@ export function remove(Id) {
 
 export function ByUid(Id) {
   return request({
-    url: '/doctor/uid/' + Id,
+    url: '/student/uid/' + Id,
     method: 'get'
   })
 }

@@ -13,4 +13,7 @@ public interface ConsultService extends Service<Consult> {
     /*更新状态*/
     void updateStatus(int status,long id);
 
+    /*条件查询咨询列表*/
+
+
 }

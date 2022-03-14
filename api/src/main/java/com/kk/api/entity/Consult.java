@@ -42,6 +42,23 @@ public class Consult {
      */
     private String content;
 
+
+
+    /**
+     * 报告地址
+     */
+    private String report_url;
+
+
+    public String getReport_url() {
+        return report_url;
+    }
+
+    public void setReport_url(String report_url) {
+        this.report_url = report_url;
+    }
+
+
     /**
      * @return id
      */
