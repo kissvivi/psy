@@ -88,15 +88,16 @@
             v-if="scope.row.status === 5"
             type="success"
             disable-transitions
-            @click.native.prevent="uploadExcel"
+            @click.native.prevent="uploadExcel(scope.row)"
             >咨询完成（上传报告）</el-button
           >
 
-          <el-tag
+          <el-button
             v-if="scope.row.status === 6"
             type="success"
+            @click.native.prevent="downExcel(scope.row)"
             disable-transitions
-            >咨询完成（已上传报告）</el-tag
+            >咨询完成（下载报告）</el-button
           >
           <!-- <el-tag
                   :type="scope.row.status === 1 ? 'primary' : 'success'"
@@ -167,28 +168,26 @@
         <el-button
           type="success"
           :loading="btnLoading"
-          @click.native.prevent="updateConsultStatusTwo(row)"
+          @click.native.prevent="updateConsultStatusTwo"
           >通过申请</el-button
         >
         <el-button
           type="primary"
           :loading="btnLoading"
-          @click.native.prevent="updateConsultStatusThree(row)"
+          @click.native.prevent="updateConsultStatusThree"
           >驳回申请</el-button
         >
       </div>
     </el-dialog>
     <!-- 文件上传 -->
     <el-dialog title="文件上传" :visible.sync="showUploadDialog">
-    <el-upload
-      class="upload-demo"
-      drag
-      action="/psyapi/consult/upload/`${}`"
-      multiple>
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip" slot="tip">只能上传xls/xlsx文件，且不超过500kb</div>
-    </el-upload>
+      <el-upload class="upload-demo" drag :http-request="handleChange"  action='string' multiple>
+        <i class="el-icon-upload"></i>
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div class="el-upload__tip" slot="tip">
+          只能上传xls/xlsx文件，且不超过500kb
+        </div>
+      </el-upload>
     </el-dialog>
   </div>
 </template>
@@ -200,15 +199,16 @@ import {
   add as addConsult,
   update as updateConsult,
   remove as removeConsult,
+  upload as uploadConsult,
 } from "@/api/consult";
 import { unix2CurrentTime } from "@/utils";
 import { mapGetters } from "vuex";
 import { mapState } from "vuex";
+import axios from 'axios'
 
 export default {
   created() {
-
-    this.initList()
+    this.initList();
   },
   data() {
     /**
@@ -225,6 +225,7 @@ export default {
       }
     };
     return {
+      consultId: 0,
       consultList: [],
       // permissionList: [],
       listLoading: false,
@@ -324,16 +325,24 @@ export default {
         });
     },
 
-    updateConsultStatusTwo(row) {
+    updateConsultStatusTwo() {
       this.statusQuery.status = 2;
-      this.statusQuery.id = row.id;
+      this.statusQuery.id = this.tempConsult.id;
 
       this.updateConsultStatus();
       this.dialogFormVisible = false;
     },
     updateConsultStatusThree() {
       this.statusQuery.status = 3;
-      this.statusQuery.id = row.id;
+      this.statusQuery.id = this.tempConsult.id;
+
+      this.updateConsultStatus();
+      this.dialogFormVisible = false;
+    },
+
+    updateConsultStatusSix(consultId) {
+      this.statusQuery.status = 6;
+      this.statusQuery.id = consultId;
 
       this.updateConsultStatus();
       this.dialogFormVisible = false;
@@ -350,12 +359,46 @@ export default {
     },
 
     //下载模板
-    downTemp(){
-    window.location.href = "http://localhost:8080/consult/upload/downLoadTemplateExcel";
+    downTemp() {
+      window.location.href =
+        "http://localhost:8080/consult/upload/downLoadTemplateExcel";
+        //"http://localhost:8080/consult/upload/1/download"
     },
 
-    uploadExcel(){
-      this.showUploadDialog = true
+    //下载上传的文件
+    downExcel(row) {
+      window.location.href =
+        //"http://localhost:8080/consult/upload/downLoadTemplateExcel";
+        "http://localhost:8080/consult/upload/"+row.id+"/download"
+    },
+
+    uploadExcel(row) {
+      this.consultId = row.id;
+      this.showUploadDialog = true;
+    },
+    handleChange(param) {
+      let fd = new FormData();
+      let self = this;
+      fd.append("file", param.file); //传文件
+
+      let baseurl = process.env.BASE_API
+
+      axios.post(baseurl+"/consult/upload/"+self.consultId, fd)
+    .then(res=>{
+      this.updateConsultStatusSix(self.consultId)
+      this.$message.success("上传成功");
+    })
+    .catch(err=>{
+        this.$message.error("上传失败");
+      });
+
+      // uploadConsult(self.consultId, fd)
+      //   .then((response) => {
+      //     this.$message.success(response.data);
+      //   })
+      //   .catch((res) => {
+      //     this.$message.error("上传失败");
+      //   });
     },
     /**
      * 改变每页数量

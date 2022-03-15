@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long code;
 
     /**
      * 用户id
@@ -33,17 +33,17 @@ public class Student {
     private Date createTime;
 
     /**
-     * @return id
+     * @return code
      */
-    public Long getId() {
-        return id;
+    public Long getCode() {
+        return code;
     }
 
     /**
-     * @param id
+     * @param code
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setCode(Long code) {
+        this.code = code;
     }
 
     /**

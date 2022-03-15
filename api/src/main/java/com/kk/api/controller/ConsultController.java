@@ -157,7 +157,7 @@ public class ConsultController {
 
     //单文件上传的功能
     @RequestMapping(value = "/upload/{id}")
-    public Result upload(@PathVariable Long id,MultipartFile file) {
+    public Result upload(@PathVariable Long id,@RequestParam MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 return ResultGenerator.genFailedResult("文件为空");
@@ -192,6 +192,67 @@ public class ConsultController {
             e.printStackTrace();
         }
         return ResultGenerator.genFailedResult("上传文件出错");
+    }
+
+
+    @RequestMapping("/upload/{id}/download")
+    public Result downLoadExcel(@PathVariable Long id,HttpServletResponse response) {
+
+        Consult consult = consultService.getById(id);
+        String report_url = consult.getReport_url();
+
+        // 创建输入输出流
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+
+        String url = null;
+        url = "D:/upload";
+        //url = "/usr/java/test.xlsx";
+
+        url += report_url;
+
+        String downLoadPath = url;
+        String fileName = report_url;//生成的文件名
+        File file2 = new File(downLoadPath);//要下载的文件对象
+        if (!file2.exists()) {//如果目录不存在,创建目录
+            file2.mkdirs();
+        }
+        long fileLength = file2.length();// 获取文件长度
+        try {
+            //Content-Disposition: attachment; filename="filename.xls"
+            //第一个参数是attachment（意味着消息体应该被下载到本地；大多数浏览器会呈现一个“保存为”的对话框，
+            // 将filename的值预填为下载后的文件名，假如它存在的话）
+            response.setHeader("Content-disposition", "attachment; filename=" + new String(fileName.getBytes("utf-8"), "ISO8859-1"));
+            //Content-Type 实体头部用于指示资源的MIME类型 media type
+            response.setHeader("Content-Type", "application/json");
+            //Content-Length, HTTP消息长度, 用十进制数字表示的八位字节的数目
+            response.setHeader("Content-Length", String.valueOf(fileLength));
+            // 创建输入输出流实例
+            bis = new BufferedInputStream(new FileInputStream(downLoadPath));
+            bos = new BufferedOutputStream(response.getOutputStream());
+            // 创建字节缓冲大小
+            byte[] buff = new byte[2048];
+            int bytesRead;
+            while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
+                bos.write(buff, 0, bytesRead);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (bis != null)
+                try {
+                    bis.close();// 关闭输入流
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            if (bos != null)
+                try {
+                    bos.close();// 关闭输出流
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        return ResultGenerator.genOkResult();
     }
 
     /** 获取当前日期与时间 **/

@@ -46,3 +46,11 @@ export function updateStatus(params) {
     params
   })
 }
+
+export function upload(id,params) {
+  return request({
+    url: '/consult/upload/'+id,
+    method: 'post',
+    params
+  })
+}

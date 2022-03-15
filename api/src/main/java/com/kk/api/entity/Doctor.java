@@ -10,7 +10,7 @@ public class Doctor {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long code;
 
     /**
      * 用户id
@@ -40,17 +40,17 @@ public class Doctor {
      *
      * @return id - id
      */
-    public Long getId() {
-        return id;
+    public Long getCode() {
+        return code;
     }
 
     /**
      * 设置id
      *
-     * @param id id
+     * @param code
      */
-    public void setId(Long id) {
-        this.id = id;
+    public void setCode(Long code) {
+        this.code = code;
     }
 
     /**
