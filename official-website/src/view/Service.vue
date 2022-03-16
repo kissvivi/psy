@@ -7,15 +7,15 @@
         <div class="container">
             <div class="Service-container row">
                 <div class="Service-item col-xs-12 col-sm-6 col-md-3 wow slideInUp" 
-                v-for="(item,index) in serviceList" :key="index" @click="ServiceClick(item.id)">
+                v-for="(item,index) in doctorList" :key="index" @click="ServiceClick(item.id)">
                     <div class="Service-item-wrapper">
                         <div class="Service-item-top">
-                            <h4>{{item.title}}</h4>
+                            <h4>{{item.name}}</h4>
                             <i></i>
-                            <p>{{item.eng_title}}</p>
+                            <p>{{item.details}}</p>
                         </div>
                         <div class="Service-item-img">
-                            <img :src="item.img" alt="服务">
+                            <img :src="item.avatar" alt="头像">
                         </div>
                         <div class="Service-item-border"></div>
                     </div>
@@ -26,42 +26,22 @@
 </template>
 <script>
 import { WOW } from 'wowjs';
+import { list as listDoctor } from "@/api/doctor";
 export default {
     name: 'Service',
     data(){
         return{
-            serviceList: [
+            listQuery: {
+                page: 1,
+                size: 999,
+            },
+            doctorList: [
                 {
-                    id: 'section-1',
-                    title: '软件定制开发',
-                    eng_title: 'Customize App',
-                    img: require('@/assets/img/psy3.png')
-                },{
-                    id: 'section-2',
-                    title: 'IT外包服务',
-                    eng_title: 'Outsourcing',
-                    img: require('@/assets/img/psy4.png')
-                },{
-                    id: 'section-3',
-                    title: '网上商城建设',
-                    eng_title: 'eCommerce Site',
-                    img: require('@/assets/img/psy3.png')
-                },{
-                    id: 'section-4',
-                    title: 'iOS应用定制开发',
-                    eng_title: 'iOS App Dev',
-                    img: require('@/assets/img/psy4.png')
-                },{
-                    id: 'section-1',
-                    title: '软件定制开发',
-                    eng_title: 'Customize App',
-                    img: require('@/assets/img/psy3.png')
-                },{
-                    id: 'section-2',
-                    title: 'IT外包服务',
-                    eng_title: 'Outsourcing',
-                    img: require('@/assets/img/psy4.png')
-                },
+                    id: 0,
+                    name: 'xxx',
+                    details: 'Customize App',
+                    avatar: require('@/assets/img/psy3.png')
+                }
             ]
         }
     },
@@ -69,7 +49,22 @@ export default {
         var wow = new WOW();
         wow.init();
     },
+    created() {
+        this.initDoctor();
+    },
     methods:{
+
+        initDoctor () {
+        listDoctor(this.listQuery)
+        .then((response) => {
+          this.doctorList = response.data.list;
+          console.log("response", response.data);
+        })
+        .catch((res) => {
+          this.$message.error("加载医生信息失败");
+        });
+        },
+
         ServiceClick(id){
             this.$router.push({
                 name: 'servicedetail',

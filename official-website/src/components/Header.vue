@@ -111,15 +111,15 @@ export default {
         },
         {
           name: "个人中心",
-          path: "/software",
+          path: "/self",
           children: [
             {
               name: "个人资料",
-              path: "/software/smartTown"
+              path: "/self/selfInfo"
             },
             {
               name: "预约记录",
-              path: "/software/bigData"
+              path: "/self/selfConsult"
             }
           ]
         },

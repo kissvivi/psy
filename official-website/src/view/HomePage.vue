@@ -111,7 +111,7 @@
         <div class="row">
           <div
             class="col-xs-12 col-sm-6 col-md-3 server-wrapper"
-            v-for="(item,index) in serverList"
+            v-for="(item,index) in doctorList"
             :key="index"
           >
             <div
@@ -119,11 +119,11 @@
               onmouseenter="this.style.color='#28f';this.style.borderColor='#28f'"
               onmouseleave="this.style.color='#666';this.style.borderColor='#ccc'"
             >
-              <img class="center-block" :src="item.logo" alt="logo">
-              <p class="text-center"><a>{{item.title}}</a></p>
+              <img class="center-block" :src="item.avatar" alt="logo">
+              <p class="text-center"><a href="#">{{item.name}}</a></p>
               <div
                 class="text-center"
-                v-html="item.content"
+                v-html="item.details"
                 onmouseenter="this.style.color='#28f'"
                 onmouseleave="this.style.color='#ccc'"
               ></div>
@@ -137,6 +137,7 @@
 <script>
 import Swiper from "swiper";
 import { WOW } from 'wowjs';
+import { list as listDoctor } from "@/api/doctor";
 export default {
   name: "HomePage",
   data() {
@@ -253,50 +254,29 @@ export default {
             "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
         }
       ],
-      serverList: [
-        {
-          logo: require("@/assets/img/psy3.png"),
-          title: "点击咨询",
-          content: "<p>由专业客服提供人工服务</p>负责疑难问题和故障受理"
-        },
-        {
-          logo: require("@/assets/img/psy4.png"),
-          title: "点击咨询",
-          content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
-        },
-        {
-          logo: require("@/assets/img/psy3.png"),
-          title: "点击咨询",
-          content: "<p>由专业客服提供人工服务</p>负责疑难问题和故障受理"
-        },
-        {
-          logo: require("@/assets/img/psy4.png"),
-          title: "点击咨询",
-          content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
-        },
-        {
-          logo: require("@/assets/img/psy3.png"),
-          title: "点击咨询",
-          content: "<p>由专业客服提供人工服务</p>负责疑难问题和故障受理"
-        },
-        {
-          logo: require("@/assets/img/psy4.png"),
-          title: "点击咨询",
-          content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
-        },
-        {
-          logo: require("@/assets/img/psy3.png"),
-          title: "点击咨询",
-          content: "<p>由专业客服提供人工服务</p>负责疑难问题和故障受理"
-        },
-        {
-          logo: require("@/assets/img/psy4.png"),
-          title: "点击咨询",
-          content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
-        }
-
+      doctorList: [
+        // {
+        //   logo: require("@/assets/img/psy4.png"),
+        //   title: "点击咨询",
+        //   content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
+        // }
       ]
     };
+  },
+  created() {
+    this.initDoctor()
+  },
+  methods: {
+    initDoctor () {
+        listDoctor(this.listQuery)
+        .then((response) => {
+          this.doctorList = response.data.list;
+          console.log("response", response.data);
+        })
+        .catch((res) => {
+          this.$message.error("加载医生信息失败");
+        });
+        },
   },
   mounted() {
     /* banner-swiper */

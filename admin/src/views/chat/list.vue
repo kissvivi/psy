@@ -65,7 +65,7 @@
           <el-button
             v-if="scope.row.status === 2"
             size="mini"
-            @click.native.prevent="toChart(scope.row)"
+            @click.native.prevent="toChat(scope.row)"
             disable-transitions
             >通过申请（点击开始咨询）</el-button
           >
@@ -79,7 +79,7 @@
           <el-button
             v-if="scope.row.status === 4"
             size="mini"
-            @click.native.prevent="toChart(scope.row)"
+            @click.native.prevent="toChat(scope.row)"
             disable-transitions
             >咨询中（点击继续咨询）</el-button
           >
@@ -285,7 +285,7 @@ export default {
       //
     },
 
-    toChart(row) {
+    toChat(row) {
       //   直接调用$router.push 实现携带参数的跳转
       this.$router.push({
         path: `/toChat/${row.id}/${row.sid}`,

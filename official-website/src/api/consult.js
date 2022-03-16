@@ -39,6 +39,14 @@ export function listByDid(params) {
   })
 }
 
+export function listBySid(params) {
+  return request({
+    url: '/consult/listBySid',
+    method: 'get',
+    params
+  })
+}
+
 export function updateStatus(params) {
   return request({
     url: '/consult/status',

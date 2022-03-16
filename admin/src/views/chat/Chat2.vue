@@ -61,6 +61,7 @@
                 type="text"
                 v-model="input"
                 id="myinfo"
+                placeholder="请输入聊天信息"
                 class="form-control col-md-12"
               />
               <br />
@@ -140,13 +141,13 @@ export default {
         status:0,
         id:0
       },
-      input: "请输入聊天信息",
+      input: "",
       actions: {
         fromID: "1",
         toID: "2",
         fromName: "",
         toName: "",
-        text: "请输入聊天信息",
+        text: "现在可以开始聊天了~",
         date: "",
       },
       reActions: [
@@ -155,7 +156,7 @@ export default {
           toID: "2",
           fromName: "",
           toName: "",
-          text: "请输入聊天信息",
+          text: "",
           date: "",
         },
       ],
@@ -208,7 +209,7 @@ export default {
 
     initWebSocket() {
       //初始化weosocket
-      const wsuri = "ws://127.0.0.1:8080/webSocket/" + this.actions.fromID;
+      const wsuri = "ws://127.0.0.1:8080/webSocket/" + this.account.accountId;
       this.websock = new WebSocket(wsuri);
       this.websock.onmessage = this.websocketonmessage;
       this.websock.onopen = this.websocketonopen;
@@ -242,9 +243,14 @@ export default {
     sendMessage() {
       this.actions.text = this.input;
       this.actions.date = this.CurentTime();
-      this.reActions.push(this.actions);
-      console.log("reActions:", this.reActions);
-      this.websocketsend(this.actions);
+      let arr = {
+        ...this.actions,
+        text: this.input,
+        date: this.CurentTime(),
+      }
+      this.reActions.push(arr);
+      this.websocketsend(arr);
+		  this.input = '';
     },
     //取消咨询
     cancelSendMessage(){

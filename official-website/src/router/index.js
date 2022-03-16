@@ -32,31 +32,31 @@ export default new Router({
             title: '首页'
           }
         }, {
-          path: '/software',
-          name: 'software',
-          component: resolve => require(['@/view/Software'], resolve),
+          path: '/self',
+          name: 'self',
+          component: resolve => require(['@/view/Self'], resolve),
           meta: {
             title: '个人中心'
           },
           children: [
             {
-              path: '/software',
-              redirect: '/software/smartTown'
+              path: '/self',
+              redirect: '/self/selfInfo'
             },
             {
-              path: '/software/smartTown',
-              name: 'software',
-              component: resolve => require(['@/view/Software_smartTown'], resolve),
+              path: '/self/selfInfo',
+              name: 'self',
+              component: resolve => require(['@/view/SelfInfo'], resolve),
               meta: {
-                title: '个人中心丨智能小镇管理系统'
+                title: '个人中心丨个人介绍'
               }
             },
             {
-              path: '/software/bigData',
-              name: 'software',
-              component: resolve => require(['@/view/Software_bigData'], resolve),
+              path: '/self/selfConsult',
+              name: 'selfConsult',
+              component: resolve => require(['@/view/SelfConsult'], resolve),
               meta: {
-                title: '个人中心丨大数据管理系统'
+                title: '个人中心丨咨询预约'
               }
             }
           ]
@@ -105,7 +105,7 @@ export default new Router({
           }
         },
         {
-          path: '/chat',
+          path: '/toChat/:consultId/:did',
           name: 'chat',
           component: resolve => require(['@/view/Chat'],resolve),
           meta: {

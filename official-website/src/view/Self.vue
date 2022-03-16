@@ -23,10 +23,10 @@ export default {
         return{
             softwareList: [
                 {
-                    path: '/software/smartTown',
+                    path: '/self/selfInfo',
                     name: '个人中心'
                 },{
-                    path: '/software/bigData',
+                    path: '/self/selfConsult',
                     name: '预约记录'
                 }
             ]
