@@ -247,7 +247,7 @@
         :model="tempQuestion"
         ref="tempQuestion"
       >
-        <el-form-item label="编号" prop="code" required>
+        <!-- <el-form-item label="编号" prop="code" required>
           <el-input
             :disabled="dialogStatus === 'show'"
             type="text"
@@ -255,7 +255,7 @@
             auto-complete="off"
             v-model="tempQuestion.code"
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="标题" prop="title" required>
           <el-input
             :disabled="dialogStatus === 'show'"
@@ -438,13 +438,15 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log("multipleSelection:" + val[0].title);
-      this.tempQuestion.tIds = [];
+      //this.tempQuestion.testIds = [];
+      let arr = []
       val.forEach((row) => {
         if (row) {
-          this.tempQuestion.tIds.push(row.id);
+          arr.push(row.id)
+          //this.tempQuestion.testestIds.push(row.id);
         }
       });
-      this.tempQuestion.tIds = String(this.tempTests.tIds);
+      this.tempQuestion.testIds = String(arr);
     },
     //过滤类型
     filterType(value, row) {
@@ -478,6 +480,7 @@ export default {
         // }
       });
     },
+    //组卷
     addQuestion() {
       addQuestion(this.tempQuestion)
         .then(() => {

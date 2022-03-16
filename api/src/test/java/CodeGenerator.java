@@ -58,12 +58,12 @@ class CodeGenerator {
     if (!scanner.next().equals("y")) {
       return;
     }
-    //CodeGenerator.genCode("t_tests","t_consult","t_doctor","t_student");
-//    genCodeByCustomModelName("t_tests","Tests");
-//    genCodeByCustomModelName("t_consult","Consult");
-//    genCodeByCustomModelName("t_doctor","Doctor");
-//    genCodeByCustomModelName("t_student","Student");
-    genCodeByCustomModelName("t_test_student","TestStudent");
+    //    CodeGenerator.genCode("t_tests","t_consult","t_doctor","t_student");
+    //    genCodeByCustomModelName("t_tests","Tests");
+    //    genCodeByCustomModelName("t_consult","Consult");
+    //    genCodeByCustomModelName("t_doctor","Doctor");
+    //    genCodeByCustomModelName("t_student","Student");
+    //genCodeByCustomModelName("t_test_student","TestStudent");
     genCodeByCustomModelName("t_question","Question");
   }
 

@@ -17,8 +17,8 @@ public class Question {
     /**
      * 题目列表
      */
-    @Column(name = "t_ids")
-    private String tIds;
+    @Column(name = "test_ids")
+    private String testIds;
 
     @Column(name = "create_time")
     private Date createTime;
@@ -63,19 +63,19 @@ public class Question {
     /**
      * 获取题目列表
      *
-     * @return t_ids - 题目列表
+     * @return test_ids - 题目列表
      */
-    public String gettIds() {
-        return tIds;
+    public String getTestIds() {
+        return testIds;
     }
 
     /**
      * 设置题目列表
      *
-     * @param tIds 题目列表
+     * @param testIds 题目列表
      */
-    public void settIds(String tIds) {
-        this.tIds = tIds;
+    public void setTestIds(String testIds) {
+        this.testIds = testIds;
     }
 
     /**
