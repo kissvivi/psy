@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kk.api.mapper.TestStudentMapper">
+  <resultMap id="BaseResultMap" type="com.kk.api.entity.TestStudent">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="sid" jdbcType="BIGINT" property="sid" />
+    <result column="self_checks" jdbcType="VARCHAR" property="selfChecks" />
+    <result column="scode" jdbcType="BIGINT" property="scode" />
+    <result column="tb_ids" jdbcType="VARCHAR" property="tbIds" />
+    <result column="sname" jdbcType="VARCHAR" property="sname" />
+  </resultMap>
+</mapper>
