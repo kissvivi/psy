@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kk.api.mapper.ChatLogMapper">
+  <resultMap id="BaseResultMap" type="com.kk.api.entity.ChatLog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="from_id" jdbcType="VARCHAR" property="fromId" />
+    <result column="to_id" jdbcType="VARCHAR" property="toId" />
+    <result column="from_name" jdbcType="VARCHAR" property="fromName" />
+    <result column="to_name" jdbcType="VARCHAR" property="toName" />
+    <result column="date" jdbcType="TIMESTAMP" property="date" />
+    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="text" jdbcType="LONGVARCHAR" property="text" />
+  </resultMap>
+</mapper>

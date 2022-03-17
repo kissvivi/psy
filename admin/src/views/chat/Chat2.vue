@@ -49,7 +49,7 @@
                 <div v-for="(item, index) in reActions" :key="index">
                   <div class="bg-info">
                     <label class="text-danger"
-                      >{{ item.fromName }}&nbsp;{{ item.date }}</label
+                      >{{ item.fromName }}&nbsp;{{ CurentTime(item.date) }}</label
                     >
                     <div class="text-success">{{ item.text }}</div>
                   </div>
@@ -131,23 +131,29 @@ import {
 } from "@/api/consult";
 import { ByUid as doctorByUid } from "@/api/doctor";
 import { ByUid as studentByUid } from "@/api/student";
+import { listByUid as chatLogListByUid } from "@/api/chatlog";
 
 export default {
   name: "test",
   data() {
     return {
       websock: null,
+      listQuery: {
+        page: 1,
+        size: 9,
+        uid: 1,
+      },
       statusQuery: {
         status:0,
         id:0
       },
       input: "",
       actions: {
-        fromID: "1",
-        toID: "2",
+        fromID: "",
+        toID: "",
         fromName: "",
         toName: "",
-        text: "现在可以开始聊天了~",
+        text: "",
         date: "",
       },
       reActions: [
@@ -205,6 +211,16 @@ export default {
         .catch((res) => {
           this.$message.error("加载学生信息失败");
         });
+
+        this.listQuery.uid = Number(this.account.accountId)
+        chatLogListByUid(this.listQuery)
+        .then((response) => {
+          this.reActions = response.data.list;
+          console.log("response", response.data);
+        })
+        .catch((res) => {
+          this.$message.error("加载聊天记录失败");
+        });
     },
 
     initWebSocket() {
@@ -242,13 +258,14 @@ export default {
     },
     sendMessage() {
       this.actions.text = this.input;
-      this.actions.date = this.CurentTime();
+      this.actions.date = this.CurentTime(new Date());
       let arr = {
         ...this.actions,
         text: this.input,
-        date: this.CurentTime(),
+        date: this.CurentTime(new Date()),
       }
       this.reActions.push(arr);
+      console.log("reActions:",this.reActions)
       this.websocketsend(arr);
 		  this.input = '';
     },
@@ -282,8 +299,10 @@ export default {
           this.$message.error("更新状态失败");
         });
     },
-    CurentTime() {
-      var now = new Date();
+    CurentTime(timestamp) {
+      //var now = new Date();
+
+      var now = new Date(timestamp);
 
       var year = now.getFullYear(); //年
       var month = now.getMonth() + 1; //月
@@ -301,7 +320,7 @@ export default {
       if (day < 10) clock += "0";
       clock += day + " ";
 
-      if (hh < 10) clock += "0";
+      //if (hh < 24) clock += "0";
       clock += hh + ":";
 
       if (mm < 10) clock += "0";

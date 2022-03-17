@@ -1,9 +1,16 @@
 package com.kk.api.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.kk.api.core.config.SpringContextUtil;
 import com.kk.api.dto.Message;
+import com.kk.api.entity.ChatLog;
+import com.kk.api.mapper.ChatLogMapper;
+import io.swagger.models.auth.In;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -15,12 +22,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @ServerEndpoint("/webSocket/{sid}")
 @Component
+@Service
 public class WebSocketServer {
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static AtomicInteger onlineNum = new AtomicInteger();
 
     //concurrent包的线程安全Set，用来存放每个客户端对应的WebSocketServer对象。
     private static ConcurrentHashMap<String, Session> sessionPools = new ConcurrentHashMap<>();
+
+    private ChatLogService chatLogService;
+
+    private Long uid;
 
     //发送消息
     public void sendMessage(Session session, String message) throws IOException {
@@ -55,6 +67,13 @@ public class WebSocketServer {
     //建立连接成功调用
     @OnOpen
     public void onOpen(Session session, @PathParam(value = "sid") String userName){
+
+
+
+
+        //保存uid
+        uid = Long.parseLong(userName);
+
         sessionPools.put(userName, session);
         addOnlineCount();
         System.out.println(userName + "加入webSocket！当前人数为" + onlineNum);
@@ -77,8 +96,22 @@ public class WebSocketServer {
     @OnMessage
     public void onMessage(String message) throws IOException{
         System.out.println(message);
+
         Message msg= JSON.parseObject(message, Message.class);
         msg.setDate(new Date());
+
+        //保存聊天记录
+        ChatLog chatLog = JSONObject.parseObject(message,ChatLog.class);
+        chatLog.setDate(null);
+        chatLog.setUid(uid);
+
+        if(this.chatLogService == null){
+            this.chatLogService = SpringContextUtil.getBean(ChatLogService.class);
+        }
+
+        System.out.println(chatLog.toString());
+        chatLogService.save(chatLog);
+
         if (msg.getToID().equals("-1")) {
             broadcast(JSON.toJSONString(msg,true));
         } else {

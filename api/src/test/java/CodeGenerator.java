@@ -63,8 +63,9 @@ class CodeGenerator {
     //    genCodeByCustomModelName("t_consult","Consult");
     //    genCodeByCustomModelName("t_doctor","Doctor");
     //    genCodeByCustomModelName("t_student","Student");
-    //genCodeByCustomModelName("t_test_student","TestStudent");
-    genCodeByCustomModelName("t_question","Question");
+    //    genCodeByCustomModelName("t_test_student","TestStudent");
+    //    genCodeByCustomModelName("t_question","Question");
+    genCodeByCustomModelName("t_chat_log","ChatLog");
   }
 
   /**
