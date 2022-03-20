@@ -31,10 +31,10 @@ export function remove(Id) {
   })
 }
 
-export function listByUid(params) {
-    return request({
-      url: '/chat/log/listByUid',
-      method: 'get',
-      params
-    })
-  }
+export function listByConsultId(params) {
+  return request({
+    url: '/chat/log/listByConsultId',
+    method: 'get',
+    params
+  })
+}

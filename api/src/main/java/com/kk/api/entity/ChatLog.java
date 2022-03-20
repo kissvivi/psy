@@ -29,7 +29,7 @@ public class ChatLog {
     @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date date;
 
-    private Long uid;
+    private Long consultId;
 
     private String text;
 
@@ -117,25 +117,21 @@ public class ChatLog {
         this.date = date;
     }
 
-    /**
-     * @return uid
-     */
-    public Long getUid() {
-        return uid;
-    }
 
-    /**
-     * @param uid
-     */
-    public void setUid(Long uid) {
-        this.uid = uid;
-    }
 
     /**
      * @return text
      */
     public String getText() {
         return text;
+    }
+
+    public Long getConsultId() {
+        return consultId;
+    }
+
+    public void setConsultId(Long consultId) {
+        this.consultId = consultId;
     }
 
     /**
@@ -145,28 +141,14 @@ public class ChatLog {
         this.text = text;
     }
 
-    @Override
-    public String toString() {
-        return "ChatLog{" +
-                "id=" + id +
-                ", fromId='" + fromId + '\'' +
-                ", toId='" + toId + '\'' +
-                ", fromName='" + fromName + '\'' +
-                ", toName='" + toName + '\'' +
-                ", date=" + date +
-                ", uid=" + uid +
-                ", text='" + text + '\'' +
-                '}';
-    }
-
-    public ChatLog(Long id, String fromId, String toId, String fromName, String toName, Date date, Long uid, String text) {
+    public ChatLog(Long id, String fromId, String toId, String fromName, String toName, Date date, Long consultId, String text) {
         this.id = id;
         this.fromId = fromId;
         this.toId = toId;
         this.fromName = fromName;
         this.toName = toName;
         this.date = date;
-        this.uid = uid;
+        this.consultId = consultId;
         this.text = text;
     }
 

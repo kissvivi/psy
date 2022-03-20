@@ -11,7 +11,7 @@
     <result column="from_name" jdbcType="VARCHAR" property="fromName" />
     <result column="to_name" jdbcType="VARCHAR" property="toName" />
     <result column="date" jdbcType="TIMESTAMP" property="date" />
-    <result column="uid" jdbcType="BIGINT" property="uid" />
+    <result column="consult_id" jdbcType="BIGINT" property="consultId" />
     <result column="text" jdbcType="LONGVARCHAR" property="text" />
   </resultMap>
 </mapper>

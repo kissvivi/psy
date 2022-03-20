@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@ServerEndpoint("/webSocket/{sid}")
+@ServerEndpoint("/webSocket/{cid}/{sid}")
 @Component
 @Service
 public class WebSocketServer {
@@ -32,7 +32,7 @@ public class WebSocketServer {
 
     private ChatLogService chatLogService;
 
-    private Long uid;
+    private Long consultId;
 
     //发送消息
     public void sendMessage(Session session, String message) throws IOException {
@@ -66,13 +66,13 @@ public class WebSocketServer {
 
     //建立连接成功调用
     @OnOpen
-    public void onOpen(Session session, @PathParam(value = "sid") String userName){
+    public void onOpen(Session session, @PathParam(value = "sid") String userName,@PathParam(value = "cid") Long cid){
 
 
 
 
         //保存uid
-        uid = Long.parseLong(userName);
+        consultId = cid;
 
         sessionPools.put(userName, session);
         addOnlineCount();
@@ -103,7 +103,7 @@ public class WebSocketServer {
         //保存聊天记录
         ChatLog chatLog = JSONObject.parseObject(message,ChatLog.class);
         chatLog.setDate(null);
-        chatLog.setUid(uid);
+        chatLog.setConsultId(consultId);
 
         if(this.chatLogService == null){
             this.chatLogService = SpringContextUtil.getBean(ChatLogService.class);

@@ -95,6 +95,32 @@ export const asyncRouterMap = [
     }]
   },
   {
+    path: '/student',
+    component: Layout,
+    redirect: '/student/list',
+    icon: 'name',
+    noDropDown: true,
+    children: [{
+      path: 'list',
+      name: '学生管理',
+      component: _import('student/list'),
+      meta: { permission: ['student:list'] }
+    }]
+  },
+  {
+    path: '/doctor',
+    component: Layout,
+    redirect: '/doctor/list',
+    icon: 'name',
+    noDropDown: true,
+    children: [{
+      path: 'list',
+      name: '医生（教师）管理',
+      component: _import('chat/list'),
+      meta: { permission: ['doctor:list'] }
+    }]
+  },
+  {
     path: '/chat',
     component: Layout,
     redirect: '/chat/list',

@@ -131,7 +131,7 @@ import {
 } from "@/api/consult";
 import { ByUid as doctorByUid } from "@/api/doctor";
 import { ByUid as studentByUid } from "@/api/student";
-import { listByUid as chatLogListByUid } from "@/api/chatlog";
+import { listByConsultId as chatLogListByConsultId } from "@/api/chatlog";
 
 export default {
   name: "test",
@@ -140,8 +140,8 @@ export default {
       websock: null,
       listQuery: {
         page: 1,
-        size: 9,
-        uid: 1,
+        size: 30,
+        cid: 1,
       },
       statusQuery: {
         status:0,
@@ -212,10 +212,11 @@ export default {
           this.$message.error("加载学生信息失败");
         });
 
-        this.listQuery.uid = Number(this.account.accountId)
-        chatLogListByUid(this.listQuery)
+        this.listQuery.uid = Number(this.$route.params.consultId)
+        chatLogListByConsultId(this.listQuery)
         .then((response) => {
           this.reActions = response.data.list;
+          this.reActions = this.reActions.reverse()
           console.log("response", response.data);
         })
         .catch((res) => {
@@ -225,7 +226,7 @@ export default {
 
     initWebSocket() {
       //初始化weosocket
-      const wsuri = "ws://127.0.0.1:8080/webSocket/" + this.account.accountId;
+      const wsuri = "ws://127.0.0.1:8080/webSocket/" +this.$route.params.consultId+"/"+this.account.accountId;
       this.websock = new WebSocket(wsuri);
       this.websock.onmessage = this.websocketonmessage;
       this.websock.onopen = this.websocketonopen;

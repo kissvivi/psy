@@ -56,14 +56,14 @@ public class ChatLogController {
         return ResultGenerator.genOkResult(pageInfo);
     }
 
-    @GetMapping("/listByUid")
+    @GetMapping("/listByConsultId")
     public Result listByUid(@RequestParam(defaultValue = "0") Integer page,
-                            @RequestParam(defaultValue = "0") Long uid,
+                            @RequestParam(defaultValue = "0") Long cid,
                        @RequestParam(defaultValue = "0") Integer size) {
         PageHelper.startPage(page, size);
 
         Condition condition = new Condition(ChatLog.class);
-        condition.createCriteria().andEqualTo("uid", uid);
+        condition.createCriteria().andEqualTo("consultId", cid);
         condition.orderBy("date").desc();
         List<ChatLog> list = chatLogService.listByCondition(condition);
         PageInfo<ChatLog> pageInfo = PageInfo.of(list);
