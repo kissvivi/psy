@@ -26,6 +26,7 @@ public class ChatLog {
     private String toName;
 
     //@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date date;
 
     private Long uid;

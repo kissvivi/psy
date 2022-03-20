@@ -64,6 +64,7 @@ public class ChatLogController {
 
         Condition condition = new Condition(ChatLog.class);
         condition.createCriteria().andEqualTo("uid", uid);
+        condition.orderBy("date").desc();
         List<ChatLog> list = chatLogService.listByCondition(condition);
         PageInfo<ChatLog> pageInfo = PageInfo.of(list);
         return ResultGenerator.genOkResult(pageInfo);

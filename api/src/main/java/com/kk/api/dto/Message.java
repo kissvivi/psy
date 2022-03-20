@@ -35,6 +35,6 @@ public class Message {
     //发送的文本
     public String text;
     //发送时间
-    //@JSONField(format="yyyy-MM-dd HH:mm:ss")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     public Date date;
 }

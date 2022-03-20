@@ -62,7 +62,7 @@
                 v-model="input"
                 id="myinfo"
                 class="form-control col-md-12"
-				placeholder="请输入聊天信息"
+                placeholder="请输入聊天信息"
               />
               <br />
               <div class="right-button">
@@ -238,16 +238,16 @@ export default {
       console.log("断开连接", e);
     },
     sendMessage() {
-		this.actions.text = this.input;
-      	this.actions.date = this.CurentTime();
-		let arr = {
-			...this.actions,
-			text: this.input,
-			date: this.CurentTime(),
-		}
-		this.reActions.push(arr);
-      	this.websocketsend(arr);
-		this.input = '';
+      this.actions.text = this.input;
+      this.actions.date = this.CurentTime();
+      let arr = {
+        ...this.actions,
+        text: this.input,
+        date: this.CurentTime(),
+      };
+      this.reActions.push(arr);
+      this.websocketsend(arr);
+      this.input = "";
     },
     //取消咨询
     cancelSendMessage() {
