@@ -4,8 +4,12 @@
     <div id="swiper" class="container-fuild">
       <div class="swiper-container banner-swiper">
         <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="(item,index) in swiperList" :key="index">
-            <img class="swiper-lazy" :data-src="item.img" alt="轮播图">
+          <div
+            class="swiper-slide"
+            v-for="(item, index) in swiperList"
+            :key="index"
+          >
+            <img class="swiper-lazy" :data-src="item.img" alt="轮播图" />
             <div class="swiper-lazy-preloader"></div>
             <!-- <div class="swiper-slide-title">
                 <h1>{{item.title}}</h1>
@@ -79,8 +83,8 @@
               <div class="customer-content2">{{item.title}}</div>
             </div>
           </div> -->
-          <!-- 如果需要导航按钮 -->
-          <!-- <div class="swiper-button-prev"></div>
+    <!-- 如果需要导航按钮 -->
+    <!-- <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
         </div>
         <div class="row visible-xs customer-block">
@@ -106,12 +110,13 @@
       <div class="container">
         <div class="whyChooseUs-title text-center">
           <p>选择医生预约咨询</p>
-<!--          <p>THE REASON TO CHOOSING US</p>
- -->        </div>
+          <!--          <p>THE REASON TO CHOOSING US</p>
+ -->
+        </div>
         <div class="row">
           <div
             class="col-xs-12 col-sm-6 col-md-3 server-wrapper"
-            v-for="(item,index) in doctorList"
+            v-for="(item, index) in doctorList"
             :key="index"
           >
             <div
@@ -119,8 +124,10 @@
               onmouseenter="this.style.color='#28f';this.style.borderColor='#28f'"
               onmouseleave="this.style.color='#666';this.style.borderColor='#ccc'"
             >
-              <img class="center-block" :src="item.avatar" alt="logo">
-              <p class="text-center"><a href="#">{{item.name}}</a></p>
+              <img class="center-block" :src="item.avatar" alt="logo" />
+              <p class="text-center">
+                <a @click="showConsult(item)">{{ item.name }}</a>
+              </p>
               <div
                 class="text-center"
                 v-html="item.details"
@@ -132,16 +139,65 @@
         </div>
       </div>
     </div>
+
+    <el-dialog
+  title="提交申请"
+  :visible.sync="dialogVisible"
+  width="30%"
+  >
+  
+  <el-form
+        status-icon
+        class="small-space"
+        label-position="left"
+        label-width="100px"
+        style="width: 400px; margin-left: 50px"
+        :model="tempConsult"
+        ref="tempConsult"
+      >
+        <el-form-item label="标题" prop="title" required>
+          <el-input
+            type="text"
+            prefix-icon="el-icon-edit"
+            auto-complete="off"
+            v-model="tempConsult.title"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="申请理由" prop="content" required>
+          <el-input
+            type="text"
+            prefix-icon="el-icon-edit"
+            auto-complete="off"
+            v-model="tempConsult.content"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="submitConsult">确 定</el-button>
+  </span>
+</el-dialog>
+
   </div>
+  
 </template>
 <script>
 import Swiper from "swiper";
-import { WOW } from 'wowjs';
+import { WOW } from "wowjs";
 import { list as listDoctor } from "@/api/doctor";
+import { add as addConsult } from "@/api/consult";
+import { mapState } from "vuex";
 export default {
   name: "HomePage",
   data() {
     return {
+
+      dialogVisible:false,
+      tempConsult:{
+        status:1
+      },
+
       swiperList: [
         {
           img: require("@/assets/img/psy1.png"),
@@ -152,107 +208,21 @@ export default {
         {
           img: require("@/assets/img/psy2.png"),
           path: "",
-          title: '您身边的IT专家2',
-          content: '宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介',
+          // title: '您身边的IT专家2',
+          // content: '宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介',
         },
         {
           img: require("@/assets/img/psy1.png"),
           path: "",
-          title: '您身边的IT专家3',
-          content: '宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介',
+          // title: '您身边的IT专家3',
+          // content: '宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介',
         },
         {
           img: require("@/assets/img/psy2.png"),
           path: "",
-          title: '您身边的IT专家4',
-          content: '宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介',
-        }
-      ],
-      customerList: [
-        {
-          logo: require("@/assets/img/logo_hp.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
+          // title: '您身边的IT专家4',
+          // content: '宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介宣传简介',
         },
-        {
-          logo: require("@/assets/img/logo_kk.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_toyota.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_kk.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_hp.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_toyota.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_kk.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_hp.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_toyota.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_hp.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_kk.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        },
-        {
-          logo: require("@/assets/img/logo_hp.png"),
-          title:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。",
-          content:
-            "您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。您可以双击这里或者点击编辑按钮来修改内容。您还可以添加图标，按钮，图片等常用元素。"
-        }
       ],
       doctorList: [
         // {
@@ -260,15 +230,43 @@ export default {
         //   title: "点击咨询",
         //   content: "<p>利用远程视频工具，提供协助</p>帮助客户进行调试、解决故障"
         // }
-      ]
+      ],
     };
   },
   created() {
-    this.initDoctor()
+    this.initDoctor();
+  },
+  computed: {
+    ...mapState({
+      account: (state) => state.account,
+    }),
   },
   methods: {
-    initDoctor () {
-        listDoctor(this.listQuery)
+
+    showConsult(row){
+
+      console.log(row.uid+"rowrowrow")
+
+      this.tempConsult.did = row.uid
+      this.tempConsult.sid = this.account.accountId
+
+      this.dialogVisible = true
+    },
+
+    submitConsult(){
+        addConsult(this.tempConsult)
+        .then((response) => {
+          
+          this.$message.success("申请咨询成功");
+          this.$router.push('/self/selfConsult');
+        })
+        .catch((res) => {
+          this.$message.error("申请咨询失败");
+        });
+    },
+
+    initDoctor() {
+      listDoctor(this.listQuery)
         .then((response) => {
           this.doctorList = response.data.list;
           console.log("response", response.data);
@@ -276,35 +274,35 @@ export default {
         .catch((res) => {
           this.$message.error("加载医生信息失败");
         });
-        },
+    },
   },
   mounted() {
     /* banner-swiper */
     new Swiper(".banner-swiper", {
       loop: true, // 循环模式选项
-      effect: 'fade',
+      effect: "fade",
       //自动播放
       autoplay: {
         delay: 3000,
         stopOnLastSlide: false,
-        disableOnInteraction: false
+        disableOnInteraction: false,
       },
       // 如果需要分页器
       pagination: {
         el: ".swiper-pagination",
-        clickable: true
+        clickable: true,
       },
       // 如果需要前进后退按钮
       navigation: {
         nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
+        prevEl: ".swiper-button-prev",
       },
       // 延迟加载
       lazy: {
-        loadPrevNext: true
+        loadPrevNext: true,
       },
       observer: true, //修改swiper自己或子元素时，自动初始化swiper
-      observeParents: true //修改swiper的父元素时，自动初始化swiper
+      observeParents: true, //修改swiper的父元素时，自动初始化swiper
     });
     /* customer-swiper */
     new Swiper(".customer-swiper", {
@@ -314,26 +312,26 @@ export default {
       autoplay: {
         delay: 3000,
         stopOnLastSlide: false,
-        disableOnInteraction: false
+        disableOnInteraction: false,
       },
       // 如果需要前进后退按钮
       navigation: {
         nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
+        prevEl: ".swiper-button-prev",
       },
       observer: true, //修改swiper自己或子元素时，自动初始化swiper
-      observeParents: true //修改swiper的父元素时，自动初始化swiper
+      observeParents: true, //修改swiper的父元素时，自动初始化swiper
     });
     /* wowjs动画 */
     var wow = new WOW({
-      boxClass: 'wow',
-      animateClass: 'animated',
+      boxClass: "wow",
+      animateClass: "animated",
       offset: 0,
       mobile: true,
-      live: true
-    })
+      live: true,
+    });
     wow.init();
-  }
+  },
 };
 </script>
 <style scoped>
@@ -354,7 +352,7 @@ export default {
   width: 100%;
   height: 100%;
 }
-#swiper .banner-swiper .swiper-slide{
+#swiper .banner-swiper .swiper-slide {
   position: relative;
 }
 #swiper .banner-swiper .swiper-slide-title {
@@ -369,11 +367,11 @@ export default {
   text-align: center;
   line-height: 80px;
 }
-#swiper .banner-swiper .swiper-slide-title > h1{
+#swiper .banner-swiper .swiper-slide-title > h1 {
   font-size: 50px;
   margin-top: 12%;
 }
-#swiper .banner-swiper .swiper-slide-title > p{
+#swiper .banner-swiper .swiper-slide-title > p {
   font-size: 20px;
   margin-top: 1%;
   font-weight: 700;

@@ -116,7 +116,7 @@ export const asyncRouterMap = [
     children: [{
       path: 'list',
       name: '医生（教师）管理',
-      component: _import('chat/list'),
+      component: _import('doctor/list'),
       meta: { permission: ['doctor:list'] }
     }]
   },

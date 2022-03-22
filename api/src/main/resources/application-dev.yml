@@ -9,11 +9,11 @@ spring:
   # 数据源（应该全部加密）
   datasource:
     # 连接，注意各个配置，尤其是要一次性执行多条 SQL 时，要 allowMultiQueries=true
-    url: jdbc:mysql://120.77.183.219:3306/admin_psychological?useUnicode=true&useSSL=false&allowMultiQueries=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://XXX:3306/admin_psychological?useUnicode=true&useSSL=false&allowMultiQueries=true&characterEncoding=utf-8&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8
     # 用户名 root
-    username: hrmdb
+    username: XXX
     # 密码 root
-    password: hrmdb123
+    password: hXX
     # 驱动类
     driver-class-name: com.mysql.cj.jdbc.Driver
   cache:

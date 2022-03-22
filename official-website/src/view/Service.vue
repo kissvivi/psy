@@ -67,7 +67,7 @@ export default {
 
         ServiceClick(id){
             this.$router.push({
-                name: 'servicedetail',
+                name: '/self/selfInfo',
                 params: {
                     id: id
                 }

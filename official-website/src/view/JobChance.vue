@@ -1,41 +1,139 @@
 <template>
   <div id="JobChance">
-    <div class="banner container-fuild text-center">工作机会</div>
+    <div class="banner container-fuild text-center">问卷调查</div>
     <div class="container">
       <div class="JobChance-container wow pulse">
-        <h2>PHP工程师</h2>
-        <p>岗位职责</p>
-        <ol>
-          <li>负责公司产品及项目系统的功能开发、代码优化；</li>
-          <li>负责项目组人员任务的分配与监督，及时解决项目技术问题；</li>
-          <li>参与系统需求分析与设计，并负责完成PHP核心代码，接口规范制定，架构设计。</li>
-        </ol>
-        <p>任职要求</p>
-        <ol>
-          <li>精通PHP+MySql+Apache开发，精通使用JavaScript、AJAX、JQuery等技术；3年以上WEB应用程序开发经验， 有大型网站或电子商务网站工作经验者优先；</li>
-          <li>熟悉jQuery，具有AJAX、HTML、CSS、JAVASCRIPT等方面的开发经验；</li>
-          <li>熟悉PHP模板技术、框架技术及设计模式，有php框架系统进行开发经验者优先，如：phpcms，dedecms等；</li>
-          <li>精通数据库原理，精通MYSQL、了解Mongo等并有相关关系数据库设计开发经验, 了解Mysql的数据库配置管理、性能优化；</li>
-          <li>熟悉常见的数据结构和算法，具备良好的编程习惯及较强的文档编写能力；</li>
-          <li>熟悉各种WEB缓存技术,熟悉大型网站构架和性能优化；</li>
-          <li>对网站系统架构的部署、搭建、优化、排错等方面有丰富经验，对高负载、大访问量情况下的系统架构有经验者优先。</li>
-        </ol>
-        <button class="center-block btn btn-warning btn-lg">投递简历</button>
+        <h3 style="text-align: center; margin-bottom: 50px">
+          关于校园心理咨询的问卷调查
+        </h3>
+
+        <el-form
+          ref="form"
+          :inline="true"
+          :model="form"
+          labelPosition="left"
+          label-width="50px"
+        >
+          <el-form-item label="学号" prop="scode" label-position="left">
+            <el-input v-model="form.scode"></el-input>
+          </el-form-item>
+          <el-form-item label="姓名" prop="sname" label-position="left">
+            <el-input v-model="form.sname"></el-input>
+          </el-form-item>
+        </el-form>
+        <el-form
+          ref="form"
+          :model="form"
+          labelPosition="top"
+          label-width="80px"
+        >
+          <el-form-item
+            v-for="(item, index) in questions.testsList"
+            :key="index"
+          >
+            <h4>{{ index + 1 }}.{{ item.title }}</h4>
+            <el-radio-group v-model="item.selectOk">
+              <el-radio label="A">A: {{ item.selectA }}</el-radio
+              ><br /><br />
+              <el-radio label="B">B: {{ item.selectB }}</el-radio
+              ><br /><br />
+              <el-radio label="C">C: {{ item.selectC }}</el-radio
+              ><br /><br />
+              <el-radio label="D">D: {{ item.selectD }}</el-radio
+              ><br /><br />
+            </el-radio-group>
+          </el-form-item>
+
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit">提交问卷</el-button>
+          </el-form-item>
+        </el-form>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { WOW } from 'wowjs';
+import { WOW } from "wowjs";
+import { testsList as testsList } from "@/api/question";
+import { add as addtestStudent } from "@/api/testStudent";
+import { mapState } from "vuex";
 export default {
   name: "JobChance",
   data() {
-    return {};
+    return {
+      form: {
+        sid: 1,
+        sname: "",
+        selfChecks: "",
+        tbids: "",
+      },
+      questions: {
+        question: {},
+        testsList: [
+          {
+            title: "zz",
+            selectA: "2321",
+            selectB: "321",
+            selectC: "321",
+            selectD: "321",
+            selectOk: null,
+          },
+        ],
+      },
+    };
   },
-  mounted(){
+  computed: {
+    ...mapState({
+      account: (state) => state.account,
+    }),
+  },
+  created() {
+    this.initQuestion();
+  },
+  methods: {
+    initQuestion() {
+      testsList()
+        .then((response) => {
+          this.questions = response.data;
+          console.log("response", response.data);
+        })
+        .catch((res) => {
+          this.$message.error("加载信息失败");
+        });
+    },
+
+    onSubmit() {
+      let tList = [ ...this.questions.testsList ];
+      let checkes = [];
+      let tbids = [];
+
+
+      tList.forEach(function (element, index, array) {
+        console.log(element);
+        checkes.push(element.selectOk)
+        tbids.push(element.id)
+
+
+      });
+      this.form.selfChecks = [...checkes].join(',')
+      this.form.tbids = [...tbids].join(',')
+      this.form.sid = this.account.accountId
+      console.log(this.form);
+
+      addtestStudent(this.form)
+        .then((response) => {
+          this.$message.success("添加信息成功");
+          console.log("response", response.data);
+        })
+        .catch((res) => {
+          this.$message.error("添加信息失败");
+        });
+    },
+  },
+  mounted() {
     var wow = new WOW();
     wow.init();
-  }
+  },
 };
 </script>
 <style scoped>
@@ -56,23 +154,23 @@ export default {
   transition: all ease 0.5s;
   border: 1px dashed salmon;
 }
-.JobChance-container h2{
+.JobChance-container h2 {
   color: rgb(255, 102, 19);
   font-weight: bolder;
   text-align: center;
 }
-.JobChance-container p{
+/* .JobChance-container p{
 font-size: 20px;
   color: rgb(255, 102, 19);
   font-weight: 700;
+} */
+.JobChance-container ol {
+  list-style-type: decimal;
+  padding-left: 30px;
 }
-.JobChance-container ol{
-    list-style-type: decimal;
-    padding-left: 30px;
-}
-.JobChance-container ol>li{
-    font-size: 14px;
-    line-height: 2.7rem;
+.JobChance-container ol > li {
+  font-size: 14px;
+  line-height: 2.7rem;
 }
 @media screen and (max-width: 997px) {
   .JobChance-container {

@@ -17,10 +17,10 @@
           </div>
         </div>
         <div class="content">
-          {{ content }}
+          {{ item.content }}
         </div>
         <div class="assess" v-if="assess">
-          {{ assess }}
+          {{ item.assess }}
         </div>
         <el-button size="small" class="btn" @click="toChat(item)"
         v-if="item.status == 2 || item.status == 4"
