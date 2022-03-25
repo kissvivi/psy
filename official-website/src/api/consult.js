@@ -19,7 +19,7 @@ export function add(Form) {
 export function update(Form) {
   return request({
     url: '/consult',
-    method: 'put',
+    method: 'patch',
     data: Form
   })
 }

@@ -124,8 +124,8 @@ export default {
           ]
         },
         {
-          name: "问卷调查",
-          path: "/jobchance",
+          name: "问卷调查列表",
+          path: "/testsList",
           children: []
         },
         // {

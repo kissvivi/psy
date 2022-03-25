@@ -31,9 +31,9 @@ export function remove(Id) {
   })
 }
 
-export function testsList() {
+export function testsList(qid) {
   return request({
-    url: '/question/testsList',
+    url: '/question/testsList/'+qid,
     method: 'get'
   })
 }

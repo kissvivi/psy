@@ -82,11 +82,19 @@ export default new Router({
             title: '公司介绍'
           }
         }, {
-          path: '/jobchance',
+          path: '/jobchance/:questionId',
           name: 'jobchance',
           component: resolve => require(['@/view/JobChance'], resolve),
           meta: {
-            title: '工作机会'
+            title: '问卷调查'
+          }
+        },
+        {
+          path: '/testsList',
+          name: 'testsList',
+          component: resolve => require(['@/view/TestsList'], resolve),
+          meta: {
+            title: '问卷调查列表'
           }
         }, {
           path: '/contactus',

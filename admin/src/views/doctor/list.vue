@@ -47,13 +47,13 @@
       fit
       highlight-current-row
     >
-      <el-table-column label="学号" align="center" prop="code" />
+      <el-table-column label="教师编号" align="center" prop="code" />
       <el-table-column label="医生名" align="center" prop="name">
       </el-table-column>
-      <el-table-column label="专业" align="center" prop="specialty" />
+      <!-- <el-table-column label="专业" align="center" prop="specialty" />
       <el-table-column label="班级" align="center" prop="clazz" />
-      <el-table-column label="性别" align="center" prop="sex" />
-      <el-table-column label="个人介绍" align="center" prop="detail" />
+      <el-table-column label="性别" align="center" prop="sex" /> -->
+      <el-table-column label="个人介绍" align="center" prop="details" />
       <!-- <el-table-column label="修改时间" align="center" prop="time">
         <template slot-scope="scope">{{ unix2CurrentTime(scope.row.time) }}</template>
       </el-table-column> -->
@@ -134,7 +134,7 @@
           ></el-input>
         </el-form-item>
 
-        <el-form-item label="个人介绍" prop="name" required>
+        <el-form-item label="个人介绍" prop="details" required>
           <el-input
             :disabled="dialogStatus === 'show'"
             type=""
@@ -189,22 +189,17 @@ import {
   resetPassword,
   remove,
 } from "@/api/doctor";
-import {
-  listRoleWithPermission,
-  listResourcePermission,
-  add as addRole,
-  update as updateRole,
-} from "@/api/role";
+import { register} from '@/api/account'
 import { unix2CurrentTime } from "@/utils";
 import { mapGetters } from "vuex";
 export default {
   created() {
-    if (this.hasPermission("doctor:update")) {
-      this.getPermissionList();
-    }
-    if (this.hasPermission("doctor:list")) {
+    // if (this.hasPermission("doctor:update")) {
+    //   this.getPermissionList();
+    // }
+    // if (this.hasPermission("doctor:list")) {
       this.getDoctorList();
-    }
+    // }
   },
   data() {
     /**
@@ -249,10 +244,17 @@ export default {
         add: "添加医生",
       },
       btnLoading: false,
+      tmpAccount: {
+        email: '',
+        name: '',
+        password: '',
+        roleId: 4 // 对应后端数据库普通用户角色Id
+      },
       tempDoctor: {
         id: "",
         name: "",
         code: "",
+        avatar:"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fci.xiaohongshu.com%2F06facb5e-c5bb-4393-078a-45bc1e6c3302%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fci.xiaohongshu.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1650354662&t=5440894448788633437073c6039caf04",
         password: "",
       },
       createRules: {
@@ -333,12 +335,29 @@ export default {
           this.isDoctorNameUnique(this.tempDoctor.id, this.tempDoctor.code)
         ) {
           this.btnLoading = true;
+          this.tempDoctor.uid = this.tempDoctor.code
           addDoctor(this.tempDoctor)
             .then(() => {
               this.$message.success("添加成功");
               this.getDoctorList();
               this.dialogDoctorFormVisible = false;
               this.btnLoading = false;
+
+              this.tmpAccount.id = this.tempDoctor.code
+              this.tmpAccount.name = this.tempDoctor.code
+              this.tmpAccount.password = this.tempDoctor.code
+              this.tmpAccount.email = this.tempDoctor.code+"@doctor.com"
+
+              register(this.tmpAccount).then(() => {
+                this.$message.success('添加成功')
+                // this.getAccountList()
+                // this.dialogFormVisible = false
+                // this.btnLoading = false
+              }).catch(res => {
+                this.$message.error('添加医生账户失败')
+                this.btnLoading = false
+              })
+
             })
             .catch((res) => {
               this.$message.error("添加医生失败");

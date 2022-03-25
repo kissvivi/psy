@@ -1,61 +1,27 @@
 <template>
   <div id="JobChance">
-    <div class="banner container-fuild text-center">问卷调查</div>
+    <div class="banner container-fuild text-center">问卷调查列表</div>
     <div class="container">
       <div class="JobChance-container wow pulse">
-        <h3 style="text-align: center; margin-bottom: 50px">
-          关于校园心理咨询的问卷调查
-        </h3>
-
-        <el-form
-          ref="form"
-          :inline="true"
-          :model="form"
-          labelPosition="left"
-          label-width="50px"
-        >
-          <el-form-item label="学号" prop="scode" label-position="left">
-            <el-input v-model="form.scode"></el-input>
-          </el-form-item>
-          <el-form-item label="姓名" prop="sname" label-position="left">
-            <el-input v-model="form.sname"></el-input>
-          </el-form-item>
-        </el-form>
-        <el-form
-          ref="form"
-          :model="form"
-          labelPosition="top"
-          label-width="80px"
-        >
-          <el-form-item
-            v-for="(item, index) in questions.testsList"
-            :key="index"
-          >
-            <h4>{{ index + 1 }}.{{ item.title }}</h4>
-            <el-radio-group v-model="item.selectOk">
-              <el-radio label="A">A: {{ item.selectA }}</el-radio
-              ><br /><br />
-              <el-radio label="B">B: {{ item.selectB }}</el-radio
-              ><br /><br />
-              <el-radio label="C">C: {{ item.selectC }}</el-radio
-              ><br /><br />
-              <el-radio label="D">D: {{ item.selectD }}</el-radio
-              ><br /><br />
-            </el-radio-group>
-          </el-form-item>
-
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit">提交问卷</el-button>
-            <el-button type="warning" @click="toBack">返回</el-button>
-          </el-form-item>
-        </el-form>
+        <el-card class="box-card"  v-for="item in questionsList"
+        :key="item.id">
+          <div slot="header" class="clearfix">
+            <span>{{item.title}}</span>
+            <el-button style="float: right; padding: 3px 0" type="text" @click="toQuestion(item)"
+              >点击答题</el-button
+            >
+          </div>
+          <div  class="text item">
+            {{item.detail}}
+          </div>
+        </el-card>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { WOW } from "wowjs";
-import { testsList as testsList } from "@/api/question";
+import { testsList as testsList,list as questionList } from "@/api/question";
 import { add as addtestStudent } from "@/api/testStudent";
 import { mapState } from "vuex";
 export default {
@@ -68,6 +34,7 @@ export default {
         selfChecks: "",
         tbids: "",
       },
+       questionsList:[],
       questions: {
         question: {},
         testsList: [
@@ -93,9 +60,9 @@ export default {
   },
   methods: {
     initQuestion() {
-      testsList(this.$route.params.questionId)
+      questionList()
         .then((response) => {
-          this.questions = response.data;
+          this.questionsList = response.data.list;
           console.log("response", response.data);
         })
         .catch((res) => {
@@ -103,22 +70,25 @@ export default {
         });
     },
 
+    toQuestion(row){
+        this.$router.push({
+        path: `/jobchance/${row.id}`,
+      });
+    },
+
     onSubmit() {
-      let tList = [ ...this.questions.testsList ];
+      let tList = [...this.questions.testsList];
       let checkes = [];
       let tbids = [];
 
-
       tList.forEach(function (element, index, array) {
         console.log(element);
-        checkes.push(element.selectOk)
-        tbids.push(element.id)
-
-
+        checkes.push(element.selectOk);
+        tbids.push(element.id);
       });
-      this.form.selfChecks = [...checkes].join(',')
-      this.form.tbids = [...tbids].join(',')
-      this.form.sid = this.account.accountId
+      this.form.selfChecks = [...checkes].join(",");
+      this.form.tbids = [...tbids].join(",");
+      this.form.sid = this.account.accountId;
       console.log(this.form);
 
       addtestStudent(this.form)
@@ -129,10 +99,6 @@ export default {
         .catch((res) => {
           this.$message.error("添加信息失败");
         });
-    },
-    toBack(){
-
-      this.$router.go(-1);
     },
   },
   mounted() {
@@ -154,10 +120,9 @@ export default {
   background-position: center center;
 }
 .JobChance-container {
-  margin: 100px;
+  margin: 50px;
   padding: 30px;
   transition: all ease 0.5s;
-  border: 1px dashed salmon;
 }
 .JobChance-container h2 {
   color: rgb(255, 102, 19);
@@ -184,5 +149,11 @@ font-size: 20px;
     border: 1px dashed salmon;
   }
 }
+
+.box-card {
+    margin: 15px;
+}
+
+
 </style>
 
