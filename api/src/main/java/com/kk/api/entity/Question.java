@@ -12,7 +12,7 @@ public class Question {
     /**
      * 标题
      */
-    private Long title;
+    private String title;
 
     /**
      * 题目列表
@@ -47,7 +47,7 @@ public class Question {
      *
      * @return title - 标题
      */
-    public Long getTitle() {
+    public String getTitle() {
         return title;
     }
 
@@ -56,7 +56,7 @@ public class Question {
      *
      * @param title 标题
      */
-    public void setTitle(Long title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 

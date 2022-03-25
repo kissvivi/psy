@@ -3,6 +3,7 @@ package com.kk.api.controller;
 import com.kk.api.core.response.Result;
 import com.kk.api.core.response.ResultGenerator;
 import com.kk.api.entity.Doctor;
+import com.kk.api.service.AccountService;
 import com.kk.api.service.DoctorService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,10 +21,13 @@ import java.util.List;
 public class DoctorController {
     @Resource
     private DoctorService doctorService;
+    @Resource private AccountService accountService;
+
 
     @PostMapping
     public Result add(@RequestBody Doctor doctor) {
         doctorService.save(doctor);
+
         return ResultGenerator.genOkResult();
     }
 

@@ -63,10 +63,11 @@ public class QuestionController {
         return ResultGenerator.genOkResult(pageInfo);
     }
 
-    @GetMapping("testsList")
-    public Result TestsList() {
+    @GetMapping("testsList/{qid}")
+    public Result TestsList(@PathVariable Long qid) {
 
         Condition condition = new Condition(Question.class);
+        condition.createCriteria().andEqualTo("id", qid);
         condition.orderBy("createTime").desc();
 
         TestsDto testsDto = new TestsDto();
