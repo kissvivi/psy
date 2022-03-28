@@ -45,18 +45,50 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
-    path: '/account',
+    path: '/system',
     component: Layout,
-    redirect: '/account/list',
-    icon: 'name',
-    noDropDown: true,
+    redirect: '/system/list',
+    icon: 'role',
+    noDropDown: false,
+    name: '系统管理',
     children: [{
-      path: 'list',
+      path: 'account/list',
       name: '账户管理',
       component: _import('account/list'),
       meta: { permission: ['account:list'] }
+    },
+    {
+      path: 'role/list',
+      name: '角色管理',
+      component: _import('role/list'),
+      meta: { permission: ['role:list'] }
+    },
+    {
+      path: 'student/list',
+      name: '学生管理',
+      component: _import('student/list'),
+      meta: { permission: ['student:list'] }
+    },
+    {
+      path: 'doctor/list',
+      name: '医生（教师）管理',
+      component: _import('doctor/list'),
+      meta: { permission: ['doctor:list'] }
     }]
   },
+  // {
+  //   path: '/account',
+  //   component: Layout,
+  //   redirect: '/account/list',
+  //   icon: 'name',
+  //   noDropDown: true,
+  //   children: [{
+  //     path: 'list',
+  //     name: '账户管理',
+  //     component: _import('account/list'),
+  //     meta: { permission: ['account:list'] }
+  //   }]
+  // },
 
   {
     path: '/account',
@@ -81,69 +113,82 @@ export const asyncRouterMap = [
     }]
   },
 
-  {
-    path: '/role',
-    component: Layout,
-    redirect: '/role/list',
-    icon: 'role',
-    noDropDown: true,
-    children: [{
-      path: 'list',
-      name: '角色管理',
-      component: _import('role/list'),
-      meta: { permission: ['role:list'] }
-    }]
-  },
-  {
-    path: '/student',
-    component: Layout,
-    redirect: '/student/list',
-    icon: 'name',
-    noDropDown: true,
-    children: [{
-      path: 'list',
-      name: '学生管理',
-      component: _import('student/list'),
-      meta: { permission: ['student:list'] }
-    }]
-  },
-  {
-    path: '/doctor',
-    component: Layout,
-    redirect: '/doctor/list',
-    icon: 'name',
-    noDropDown: true,
-    children: [{
-      path: 'list',
-      name: '医生（教师）管理',
-      component: _import('doctor/list'),
-      meta: { permission: ['doctor:list'] }
-    }]
-  },
+  // {
+  //   path: '/role',
+  //   component: Layout,
+  //   redirect: '/role/list',
+  //   icon: 'role',
+  //   noDropDown: true,
+  //   children: [{
+  //     path: 'list',
+  //     name: '角色管理',
+  //     component: _import('role/list'),
+  //     meta: { permission: ['role:list'] }
+  //   }]
+  // },
+  // {
+  //   path: '/student',
+  //   component: Layout,
+  //   redirect: '/student/list',
+  //   icon: 'name',
+  //   noDropDown: true,
+  //   children: [{
+  //     path: 'list',
+  //     name: '学生管理',
+  //     component: _import('student/list'),
+  //     meta: { permission: ['student:list'] }
+  //   }]
+  // },
+  // {
+  //   path: '/doctor',
+  //   component: Layout,
+  //   redirect: '/doctor/list',
+  //   icon: 'name',
+  //   noDropDown: true,
+  //   children: [{
+  //     path: 'list',
+  //     name: '医生（教师）管理',
+  //     component: _import('doctor/list'),
+  //     meta: { permission: ['doctor:list'] }
+  //   }]
+  // },
   {
     path: '/chat',
     component: Layout,
     redirect: '/chat/list',
-    icon: 'name',
+    icon: 'wechat',
     noDropDown: true,
     children: [{
       path: 'list',
       name: '咨询管理',
       component: _import('chat/list'),
-      meta: { permission: ['account:list'] }
+      meta: { permission: ['consult:dlist'] }
     }]
   },
   {
     path: '/tests',
     component: Layout,
     redirect: '/tests/list',
-    icon: 'name',
-    noDropDown: true,
+    icon: 'report',
+    noDropDown: false,
+    name: '问卷管理',
     children: [{
       path: 'list',
-      name: '问卷管理',
+      name: '问卷题管理',
       component: _import('tests/list'),
-      meta: { permission: ['account:list'] }
+      meta: { permission: ['question:list'] }
+    },
+    {
+      path: 'question/list',
+      name: '问卷列表',
+      component: _import('question/list'),
+      meta: { permission: ['question:list'] }
+    },
+    {
+      path: 'teststudent/list',
+      name: '学生问卷列表',
+      component: _import('teststudent/list'),
+      meta: { permission: ['teststudent:list'] }
     }]
   }
 ]

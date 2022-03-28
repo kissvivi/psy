@@ -1,33 +1,30 @@
 <template>
   <div class="dashboard-container">
-    <div class="dashboard-text">
-      <h4>Permission</h4>
-      <ol>
-        <li v-for="code in permissionCodeList" :key="code">{{ code }}</li>
-      </ol>
-    </div>
+    <component :is="currentRole" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import adminDashboard from './admin'
 
 export default {
-  name: 'dashboard',
+  name: 'Dashboard',
+  components: { adminDashboard},
+  data() {
+    return {
+      currentRole: 'adminDashboard'
+    }
+  },
   computed: {
-    ...mapGetters(['permissionCodeList'])
+    ...mapGetters([
+      'roles'
+    ])
+  },
+  created() {
+    // if (!this.roles.includes('admin')) {
+    //   this.currentRole = 'editorDashboard'
+    // }
   }
 }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
-</style>

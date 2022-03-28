@@ -73,18 +73,18 @@
             v-if="hasPermission('student:detail')"
             @click.native.prevent="showRoleDialog(scope.$index)"
           >查看</el-button> -->
-          <el-button
+          <!-- <el-button
             type="warning"
             size="mini"
             v-if="hasPermission('student:reset')"
             @click.native.prevent="resetPassword(scope.row.id)"
             >重置密码</el-button
-          >
+          > -->
           <el-button
             type="danger"
             size="mini"
             v-if="hasPermission('student:delete')"
-            @click.native.prevent="removeRole(scope.row.id)"
+            @click.native.prevent="removeStudent(scope.row)"
             >删除</el-button
           >
         </template>
@@ -225,12 +225,12 @@ import { unix2CurrentTime } from "@/utils";
 import { mapGetters } from "vuex";
 export default {
   created() {
-    if (this.hasPermission("student:update")) {
-      this.getPermissionList();
-    }
-    if (this.hasPermission("student:list")) {
+    // if (this.hasPermission("student:update")) {
+    //   this.getPermissionList();
+    // }
+    // if (this.hasPermission("student:list")) {
       this.getStudentList();
-    }
+    // }
   },
   data() {
     /**
@@ -435,15 +435,18 @@ export default {
      * @param id 学生id
      * @returns {boolean}
      */
-    removeRole(id) {
-      this.$confirm("删除该角色？", "警告", {
+    removeStudent(row) {
+
+      console.log("-------",row)
+
+      this.$confirm("删除该学生？", "警告", {
         confirmButtonText: "是",
         cancelButtonText: "否",
         type: "warning",
       })
         .then(() => {
-          const studentId = id;
-          remove(studentId)
+          const code = Number(row.code);
+          remove(code)
             .then(() => {
               this.$message.success("删除成功");
               this.getStudentList();
