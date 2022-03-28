@@ -5,8 +5,10 @@ import javax.persistence.*;
 
 @Table(name = "t_student")
 public class Student {
+    /**
+     * 学号
+     */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long code;
 
     /**
@@ -33,14 +35,28 @@ public class Student {
     private Date createTime;
 
     /**
-     * @return code
+     * 性别
+     */
+    private String sex;
+
+    /**
+     * 个人介绍
+     */
+    private String detail;
+
+    /**
+     * 获取学号
+     *
+     * @return code - 学号
      */
     public Long getCode() {
         return code;
     }
 
     /**
-     * @param code
+     * 设置学号
+     *
+     * @param code 学号
      */
     public void setCode(Long code) {
         this.code = code;
@@ -130,5 +146,41 @@ public class Student {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * 获取性别
+     *
+     * @return sex - 性别
+     */
+    public String getSex() {
+        return sex;
+    }
+
+    /**
+     * 设置性别
+     *
+     * @param sex 性别
+     */
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    /**
+     * 获取个人介绍
+     *
+     * @return detail - 个人介绍
+     */
+    public String getDetail() {
+        return detail;
+    }
+
+    /**
+     * 设置个人介绍
+     *
+     * @param detail 个人介绍
+     */
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

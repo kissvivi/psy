@@ -11,5 +11,7 @@
     <result column="specialty" jdbcType="VARCHAR" property="specialty" />
     <result column="clazz" jdbcType="VARCHAR" property="clazz" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="sex" jdbcType="CHAR" property="sex" />
+    <result column="detail" jdbcType="VARCHAR" property="detail" />
   </resultMap>
 </mapper>

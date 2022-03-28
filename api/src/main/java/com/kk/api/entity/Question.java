@@ -1,5 +1,7 @@
 package com.kk.api.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -21,6 +23,7 @@ public class Question {
     private String testIds;
 
     @Column(name = "create_time")
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
     /**

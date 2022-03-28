@@ -2,6 +2,7 @@ package com.kk.api.controller;
 
 import com.kk.api.core.response.Result;
 import com.kk.api.core.response.ResultGenerator;
+import com.kk.api.entity.Student;
 import com.kk.api.entity.TestStudent;
 import com.kk.api.service.TestStudentService;
 import com.github.pagehelper.PageHelper;
@@ -44,6 +45,8 @@ public Result detail(@PathVariable Long id) {
 TestStudent testStudent = testStudentService.getById(id);
 return ResultGenerator.genOkResult(testStudent);
 }
+
+
 
 @GetMapping
 public Result list(@RequestParam(defaultValue = "0") Integer page,

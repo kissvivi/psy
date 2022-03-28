@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
 * @author kk
-* @date 2022/03/08
+* @date 2022/03/28
 */
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -24,4 +23,5 @@ private StudentMapper tStudentMapper;
     public Student getStudentByUid(Long uid) {
         return tStudentMapper.getStudentByUid(uid);
     }
+
 }
